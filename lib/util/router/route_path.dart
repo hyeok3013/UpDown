@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:up_down/component/page_not_found.dart';
 import 'package:up_down/component/scaffold_with_nav_bar.dart';
+import 'package:up_down/src/provider/auth_repository_provider.dart';
 import 'package:up_down/src/view/auth/reset_password/reset_password_view.dart';
 import 'package:up_down/src/view/auth/signin/signin_view.dart';
 import 'package:up_down/src/view/auth/signup/signup_view.dart';
@@ -21,9 +23,44 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 @riverpod
 GoRouter route(RouteRef ref) {
+  final authState = ref.watch(authStateStreamProvider);
+
   return GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: '/home',
+      initialLocation: '/splash',
+
+      ///웹에서 다른 주소로 접속을 할 때 redirect을 사용해서 잘못된 접근을 막을 수 있음.
+      ///앱에서는 상대적으로 덜 중요해서 로그인의 여부만 잘 관리해도 될 것 같음.
+
+      redirect: (context, state) {
+        if (authState is AsyncLoading<User?>) {
+          return '/splash';
+        }
+
+        if (authState is AsyncError<User?>) {
+          return '/firebaseError';
+        }
+
+        ///AsyncData
+        final authenticated = authState.valueOrNull != null;
+
+        final authenticating = (state.matchedLocation == '/signin') ||
+            (state.matchedLocation == '/signup') ||
+            (state.matchedLocation == 'resetPassword');
+
+        if (authenticated == false) {
+          return authenticating ? null : '/signin';
+        }
+
+        // if (!fbAuth.currentUser!.emailVerified) {
+        //   return '/verifyEmail';
+        // }
+
+        final verifyingEmail = state.matchedLocation == '/verifyEmail';
+        final splashing = state.matchedLocation == '/splash';
+
+        return (authenticating || verifyingEmail || splashing) ? '/home' : null;
+      },
       routes: [
         GoRoute(
           path: '/splash',
