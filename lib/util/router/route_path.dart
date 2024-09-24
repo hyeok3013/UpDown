@@ -3,8 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:up_down/component/page_not_found.dart';
 import 'package:up_down/component/scaffold_with_nav_bar.dart';
-import 'package:up_down/src/view/auth/auth_view.dart';
-import 'package:up_down/src/view/auth/pages/welcome_page.dart';
+import 'package:up_down/src/view/chat/chat_view.dart';
 import 'package:up_down/src/view/home/home_view.dart';
 import 'package:up_down/src/view/result/result_view.dart';
 import 'package:up_down/util/router/route_names.dart';
@@ -17,20 +16,20 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 GoRouter route(RouteRef ref) {
   return GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: '/signin',
+      initialLocation: '/home',
       routes: [
         GoRoute(
           path: '/auth',
           name: RouteNames.auth,
           builder: (context, state) {
-            return const WelcomePage();
+            return const Placeholder();
           },
         ),
         GoRoute(
           path: '/signin',
           name: RouteNames.signin,
           builder: (context, state) {
-            return const SignInPage();
+            return const Placeholder();
           },
         ),
         GoRoute(
@@ -62,7 +61,7 @@ GoRouter route(RouteRef ref) {
                   path: '/chat',
                   name: RouteNames.chat,
                   builder: (context, state) {
-                    return const Placeholder();
+                    return const ChatView();
                   },
                 ),
               ],
