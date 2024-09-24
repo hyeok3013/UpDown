@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FirebaseErrorPage extends StatelessWidget {
-  const FirebaseErrorPage({super.key});
+class FirebaseErrorView extends StatelessWidget {
+  const FirebaseErrorView({super.key});
 
   @override
   Widget build(BuildContext context) {

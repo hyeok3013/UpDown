@@ -3,9 +3,16 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:up_down/component/page_not_found.dart';
 import 'package:up_down/component/scaffold_with_nav_bar.dart';
+import 'package:up_down/src/view/auth/reset_password/reset_password_view.dart';
+import 'package:up_down/src/view/auth/signin/signin_view.dart';
+import 'package:up_down/src/view/auth/signup/signup_view.dart';
+import 'package:up_down/src/view/auth/verify_email/verify_email_view.dart';
 import 'package:up_down/src/view/chat/chat_view.dart';
 import 'package:up_down/src/view/home/home_view.dart';
 import 'package:up_down/src/view/result/result_view.dart';
+import 'package:up_down/src/view/setting/change_password/change_password_view.dart';
+import 'package:up_down/src/view/splash/firebase_error_view.dart';
+import 'package:up_down/src/view/splash/splash_view.dart';
 import 'package:up_down/util/router/route_names.dart';
 
 part 'route_path.g.dart';
@@ -19,26 +26,50 @@ GoRouter route(RouteRef ref) {
       initialLocation: '/home',
       routes: [
         GoRoute(
-          path: '/auth',
-          name: RouteNames.auth,
+          path: '/splash',
+          name: RouteNames.splash,
           builder: (context, state) {
-            return const Placeholder();
+            print('##### Splash #####');
+            return const SplashView();
+          },
+        ),
+        GoRoute(
+          path: '/firebaseError',
+          name: RouteNames.firebaseError,
+          builder: (context, state) {
+            return const FirebaseErrorView();
           },
         ),
         GoRoute(
           path: '/signin',
           name: RouteNames.signin,
           builder: (context, state) {
-            return const Placeholder();
+            return const SigninView();
           },
         ),
         GoRoute(
           path: '/signup',
           name: RouteNames.signup,
           builder: (context, state) {
-            return const Placeholder();
+            return const SignupView();
           },
         ),
+        GoRoute(
+          path: '/resetPassword',
+          name: RouteNames.resetPassword,
+          builder: (context, state) {
+            return const ResetPasswordView();
+          },
+        ),
+        GoRoute(
+          path: '/verifyEmail',
+          name: RouteNames.verifyEmail,
+          builder: (context, state) {
+            return const VerifyEmailView();
+          },
+        ),
+
+        ///Bottom Navigation
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
             return ScaffoldWithNavBar(navigationShell: navigationShell);
@@ -85,6 +116,15 @@ GoRouter route(RouteRef ref) {
                   builder: (context, state) {
                     return const Placeholder();
                   },
+                  routes: [
+                    GoRoute(
+                      path: 'changePassword',
+                      name: RouteNames.changePassword,
+                      builder: (context, state) {
+                        return const ChangePasswordView();
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
