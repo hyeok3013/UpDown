@@ -6,6 +6,7 @@ class RouteNames {
   static const setting = 'setting';
   static const splash = 'splash';
   static const firebaseError = 'firebaseError';
+  static const vote = 'vote';
 
   ///AUth 관련 페이지
   static const signin = 'signin';

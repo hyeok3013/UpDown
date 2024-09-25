@@ -82,11 +82,12 @@ class ChatView extends ConsumerWidget {
                 subtitle: Text(
                     '만든 사람: ${room.personName}\n시작: ${room.roomStartDate}'),
                 onTap: () {
-                  // 채팅방으로 이동 (예시로 라우터 사용)
-                  // context.goNamed(
-                  //   RouteNames.chatRoom, // 정의된 라우터 이름
-                  //   params: {'roomId': room.roomId},
-                  // );
+                  context.goNamed(
+                    RouteNames.vote,
+                    pathParameters: {
+                      'roomId': room.roomId
+                    }, // roomId를 params로 전달
+                  ); //
                 },
               );
             },

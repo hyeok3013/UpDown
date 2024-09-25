@@ -10,6 +10,7 @@ import 'package:up_down/src/view/auth/signin/signin_view.dart';
 import 'package:up_down/src/view/auth/signup/signup_view.dart';
 import 'package:up_down/src/view/auth/verify_email/verify_email_view.dart';
 import 'package:up_down/src/view/chat/chat_view.dart';
+import 'package:up_down/src/view/chat/vote/vote_view.dart';
 import 'package:up_down/src/view/home/home_view.dart';
 import 'package:up_down/src/view/result/result_view.dart';
 import 'package:up_down/src/view/setting/change_password/change_password_view.dart';
@@ -141,6 +142,16 @@ GoRouter route(RouteRef ref) {
                   builder: (context, state) {
                     return const ChatView();
                   },
+                  routes: [
+                    GoRoute(
+                      path: 'vote/:roomId',
+                      name: RouteNames.vote,
+                      builder: (context, state) {
+                        final roomId = state.pathParameters['roomId'];
+                        return VoteView(roomId: roomId!);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
