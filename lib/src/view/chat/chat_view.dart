@@ -7,7 +7,6 @@ import 'package:up_down/src/model/custom_error.dart';
 import 'package:up_down/src/model/room.dart';
 import 'package:up_down/src/provider/auth_repository_provider.dart';
 import 'package:up_down/src/view/chat/chat_provider.dart';
-import 'package:up_down/util/helper/firebase_helper.dart';
 import 'package:up_down/util/router/route_names.dart';
 
 class ChatView extends ConsumerWidget {

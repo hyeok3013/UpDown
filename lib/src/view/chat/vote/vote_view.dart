@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:up_down/src/model/custom_error.dart';
 import 'package:up_down/src/model/message.dart';
+import 'package:up_down/src/view/chat/vote/vote_provider.dart';
 
 class VoteView extends ConsumerStatefulWidget {
   final String roomId;
@@ -14,25 +16,16 @@ class VoteView extends ConsumerStatefulWidget {
 class _VoteViewState extends ConsumerState<VoteView> {
   final TextEditingController _messageController = TextEditingController();
 
-  Future<void> _sendMessage(String content) async {
-    if (content.trim().isEmpty) return;
-
-    // Firestore에 저장할 데이터 맵으로 변환
-    final newMessage = {
-      'userId': 'exampleUserId', // 실제 유저 ID로 교체
-      'message': content,
-      'sentAt': Timestamp.now(),
-    };
-
-    await FirebaseFirestore.instance
-        .collection('rooms_test')
-        .doc(widget.roomId)
-        .collection('messages')
-        .add(newMessage);
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final messageState = ref.watch(voteProvider(roomId: widget.roomId));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chat Room'),
@@ -40,26 +33,13 @@ class _VoteViewState extends ConsumerState<VoteView> {
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('rooms_test')
-                  .doc(widget.roomId)
-                  .collection('messages')
-                  .orderBy('sentAt', descending: true)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+            child: messageState.when(
+              data: (messages) {
+                if (messages.isEmpty) {
+                  return const Center(
+                    child: Text('No messages yet'),
+                  );
                 }
-
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return const Center(child: Text('No messages yet'));
-                }
-
-                final messages = snapshot.data!.docs
-                    .map((doc) => Message.fromDoc(doc))
-                    .toList();
-
                 return ListView.builder(
                   reverse: true,
                   itemCount: messages.length,
@@ -73,6 +53,23 @@ class _VoteViewState extends ConsumerState<VoteView> {
                   },
                 );
               },
+              error: (e, _) {
+                final error = e as CustomError;
+
+                return Center(
+                  child: Text(
+                    'code: ${error.code}\nplugin: ${error.plugin}\nmessage: ${error.message}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 18,
+                    ),
+                  ),
+                );
+              },
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
           ),
           Padding(
@@ -90,10 +87,14 @@ class _VoteViewState extends ConsumerState<VoteView> {
                 IconButton(
                   icon: const Icon(Icons.send),
                   onPressed: () {
-                    _sendMessage(_messageController.text);
+                    ref
+                        .read(voteProvider(roomId: widget.roomId).notifier)
+                        .sendMessage(
+                            roomId: widget.roomId,
+                            message: _messageController.text);
                     _messageController.clear();
                   },
-                ),
+                )
               ],
             ),
           ),
