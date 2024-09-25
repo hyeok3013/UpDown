@@ -15,6 +15,7 @@ import 'package:up_down/src/view/result/result_view.dart';
 import 'package:up_down/src/view/setting/change_password/change_password_view.dart';
 import 'package:up_down/src/view/splash/firebase_error_view.dart';
 import 'package:up_down/src/view/splash/splash_view.dart';
+import 'package:up_down/util/helper/firebase_helper.dart';
 import 'package:up_down/util/router/route_names.dart';
 
 part 'route_path.g.dart';
@@ -52,9 +53,9 @@ GoRouter route(RouteRef ref) {
           return authenticating ? null : '/signin';
         }
 
-        // if (!fbAuth.currentUser!.emailVerified) {
-        //   return '/verifyEmail';
-        // }
+        if (!fbAuth.currentUser!.emailVerified) {
+          return '/verifyEmail';
+        }
 
         final verifyingEmail = state.matchedLocation == '/verifyEmail';
         final splashing = state.matchedLocation == '/splash';
