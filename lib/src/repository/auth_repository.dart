@@ -5,6 +5,7 @@ import 'package:up_down/util/helper/handle_exception.dart';
 class AuthRepository {
   User? get currentUser => fbAuth.currentUser;
 
+  ///Auth
   Future<void> signup({
     required String name,
     required String email,

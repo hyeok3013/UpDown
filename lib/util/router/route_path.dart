@@ -121,6 +121,15 @@ GoRouter route(RouteRef ref) {
                   builder: (context, state) {
                     return const HomeView();
                   },
+                  routes: [
+                    GoRoute(
+                      path: 'changePassword',
+                      name: RouteNames.changePassword,
+                      builder: (context, state) {
+                        return const ChangePasswordView();
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -154,15 +163,6 @@ GoRouter route(RouteRef ref) {
                   builder: (context, state) {
                     return const Placeholder();
                   },
-                  routes: [
-                    GoRoute(
-                      path: 'changePassword',
-                      name: RouteNames.changePassword,
-                      builder: (context, state) {
-                        return const ChangePasswordView();
-                      },
-                    ),
-                  ],
                 ),
               ],
             ),
