@@ -9,18 +9,19 @@ class RoomRepository {
     try {
       final QuerySnapshot roomsCol = await roomsCollection.get();
 
-      if (roomsCol.docs.isNotEmpty) {
-        final List<Room> rooms = roomsCol.docs.map((doc) {
-          return Room.fromDoc(doc);
-        }).toList();
-
-        // 방 리스트 반환
-        return rooms;
+      // 방이 없을 경우 빈 리스트 반환
+      if (roomsCol.docs.isEmpty) {
+        return []; // 빈 리스트 반환
       }
 
-      throw 'User not found';
+      // 방이 있을 경우 Room 객체로 변환하여 반환
+      final List<Room> rooms = roomsCol.docs.map((doc) {
+        return Room.fromDoc(doc);
+      }).toList();
+
+      return rooms;
     } catch (e) {
-      throw handleException(e);
+      throw handleException(e); // Firestore 쿼리에서 발생한 예외 처리
     }
   }
 

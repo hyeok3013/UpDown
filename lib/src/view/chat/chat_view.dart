@@ -29,7 +29,7 @@ class ChatView extends ConsumerWidget {
     );
 
     // 방 리스트에 대한 상태를 가져옴
-    final roomState = ref.watch(chatProvider);
+    final roomState = ref.watch(roomListProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +48,7 @@ class ChatView extends ConsumerWidget {
           ),
           IconButton(
             onPressed: () {
-              ref.read(chatProvider.notifier).createRoom(room);
+              ref.read(roomListProvider.notifier).createRoom(room);
             },
             icon: const Icon(Icons.add),
           ),

@@ -5,7 +5,7 @@ import 'package:up_down/src/provider/room_repository_provider.dart';
 part 'chat_provider.g.dart';
 
 @riverpod
-class Chat extends _$Chat {
+class RoomList extends _$RoomList {
   @override
   FutureOr<List<Room>> build() {
     return ref.read(roomRepositoryProvider).getRooms();

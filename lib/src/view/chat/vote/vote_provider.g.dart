@@ -6,7 +6,7 @@ part of 'vote_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$voteHash() => r'670b639f93c4218f5f62c3871a5d2cb86cc557fa';
+String _$judgmentHash() => r'94e9e612905d1d6eeb5d64dc827ed0ce1fed234a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,35 +29,36 @@ class _SystemHash {
   }
 }
 
-abstract class _$Vote extends BuildlessAutoDisposeAsyncNotifier<List<Message>> {
+abstract class _$Judgment
+    extends BuildlessAutoDisposeAsyncNotifier<VoteViewState> {
   late final String roomId;
 
-  FutureOr<List<Message>> build({
+  FutureOr<VoteViewState> build({
     required String roomId,
   });
 }
 
-/// See also [Vote].
-@ProviderFor(Vote)
-const voteProvider = VoteFamily();
+/// See also [Judgment].
+@ProviderFor(Judgment)
+const judgmentProvider = JudgmentFamily();
 
-/// See also [Vote].
-class VoteFamily extends Family<AsyncValue<List<Message>>> {
-  /// See also [Vote].
-  const VoteFamily();
+/// See also [Judgment].
+class JudgmentFamily extends Family<AsyncValue<VoteViewState>> {
+  /// See also [Judgment].
+  const JudgmentFamily();
 
-  /// See also [Vote].
-  VoteProvider call({
+  /// See also [Judgment].
+  JudgmentProvider call({
     required String roomId,
   }) {
-    return VoteProvider(
+    return JudgmentProvider(
       roomId: roomId,
     );
   }
 
   @override
-  VoteProvider getProviderOverride(
-    covariant VoteProvider provider,
+  JudgmentProvider getProviderOverride(
+    covariant JudgmentProvider provider,
   ) {
     return call(
       roomId: provider.roomId,
@@ -76,27 +77,29 @@ class VoteFamily extends Family<AsyncValue<List<Message>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'voteProvider';
+  String? get name => r'judgmentProvider';
 }
 
-/// See also [Vote].
-class VoteProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<Vote, List<Message>> {
-  /// See also [Vote].
-  VoteProvider({
+/// See also [Judgment].
+class JudgmentProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<Judgment, VoteViewState> {
+  /// See also [Judgment].
+  JudgmentProvider({
     required String roomId,
   }) : this._internal(
-          () => Vote()..roomId = roomId,
-          from: voteProvider,
-          name: r'voteProvider',
+          () => Judgment()..roomId = roomId,
+          from: judgmentProvider,
+          name: r'judgmentProvider',
           debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product') ? null : _$voteHash,
-          dependencies: VoteFamily._dependencies,
-          allTransitiveDependencies: VoteFamily._allTransitiveDependencies,
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$judgmentHash,
+          dependencies: JudgmentFamily._dependencies,
+          allTransitiveDependencies: JudgmentFamily._allTransitiveDependencies,
           roomId: roomId,
         );
 
-  VoteProvider._internal(
+  JudgmentProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -109,8 +112,8 @@ class VoteProvider
   final String roomId;
 
   @override
-  FutureOr<List<Message>> runNotifierBuild(
-    covariant Vote notifier,
+  FutureOr<VoteViewState> runNotifierBuild(
+    covariant Judgment notifier,
   ) {
     return notifier.build(
       roomId: roomId,
@@ -118,10 +121,10 @@ class VoteProvider
   }
 
   @override
-  Override overrideWith(Vote Function() create) {
+  Override overrideWith(Judgment Function() create) {
     return ProviderOverride(
       origin: this,
-      override: VoteProvider._internal(
+      override: JudgmentProvider._internal(
         () => create()..roomId = roomId,
         from: from,
         name: null,
@@ -134,13 +137,14 @@ class VoteProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<Vote, List<Message>> createElement() {
-    return _VoteProviderElement(this);
+  AutoDisposeAsyncNotifierProviderElement<Judgment, VoteViewState>
+      createElement() {
+    return _JudgmentProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is VoteProvider && other.roomId == roomId;
+    return other is JudgmentProvider && other.roomId == roomId;
   }
 
   @override
@@ -152,18 +156,18 @@ class VoteProvider
   }
 }
 
-mixin VoteRef on AutoDisposeAsyncNotifierProviderRef<List<Message>> {
+mixin JudgmentRef on AutoDisposeAsyncNotifierProviderRef<VoteViewState> {
   /// The parameter `roomId` of this provider.
   String get roomId;
 }
 
-class _VoteProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<Vote, List<Message>>
-    with VoteRef {
-  _VoteProviderElement(super.provider);
+class _JudgmentProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<Judgment, VoteViewState>
+    with JudgmentRef {
+  _JudgmentProviderElement(super.provider);
 
   @override
-  String get roomId => (origin as VoteProvider).roomId;
+  String get roomId => (origin as JudgmentProvider).roomId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

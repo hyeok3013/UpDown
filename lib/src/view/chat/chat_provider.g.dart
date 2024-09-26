@@ -6,20 +6,20 @@ part of 'chat_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatHash() => r'e080c0d8629ec0de31575ccaf8adb74f9928e1a4';
+String _$roomListHash() => r'386148e4a80255b7c33233a0f4f59275844867f4';
 
-/// See also [Chat].
-@ProviderFor(Chat)
-final chatProvider =
-    AutoDisposeAsyncNotifierProvider<Chat, List<Room>>.internal(
-  Chat.new,
-  name: r'chatProvider',
+/// See also [RoomList].
+@ProviderFor(RoomList)
+final roomListProvider =
+    AutoDisposeAsyncNotifierProvider<RoomList, List<Room>>.internal(
+  RoomList.new,
+  name: r'roomListProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$chatHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$roomListHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Chat = AutoDisposeAsyncNotifier<List<Room>>;
+typedef _$RoomList = AutoDisposeAsyncNotifier<List<Room>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
