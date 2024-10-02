@@ -180,9 +180,9 @@ class AuthRepository {
       if (result.status == LoginStatus.success) {
         final AccessToken accessToken = result.accessToken!;
 
-        final credential = //토큰 함수를 눌러서 string으로 바꾸어서 해결
+        final credential =
             FacebookAuthProvider.credential(accessToken.tokenString); // 여기를 수정
-//api 요금 container resistry :
+
         final newUser = await fbAuth.signInWithCredential(credential);
 
         await usersCollection.doc(newUser.user!.uid).set({
