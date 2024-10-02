@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart' as kUser;
 import 'package:up_down/util/helper/firebase_helper.dart';
@@ -171,37 +172,32 @@ class AuthRepository {
     }
   }
 
-  // //페이스북 로그인
-  // Future<void> signInWithFacebook() async {
-  //   //^
-  //   try {
-  //     final LoginResult result = await FacebookAuth.instance.login(); //^
-  //
-  //     if (result.status == LoginStatus.success) {
-  //       //^
-  //       final AccessToken accessToken = result.accessToken!; //^
-  //
-  //       final credential = FacebookAuthProvider.credential(accessToken.token);
-  //
-  //       final newUser = await fbAuth.signInWithCredential(credential); //^
-  //
-  //       if (newUser.additionalUserInfo?.isNewUser ?? false) {
-  //         //^
-  //         await usersCollection.doc(newUser.user!.uid).set({
-  //           //^
-  //           'name': newUser.user!.displayName, //^
-  //           'email': newUser.user!.email, //^
-  //           'isAdmin': false, //^
-  //         }); //^
-  //       }
-  //     } else {
-  //       throw Exception('Facebook sign in failed: ${result.status}'); //^
-  //     }
-  //   } catch (e) {
-  //     print('facebook error: $e'); //^
-  //     throw handleException(e); //^
-  //   }
-  // }
+  //페이스북 로그인
+  Future<void> signInWithFacebook() async {
+    try {
+      final LoginResult result = await FacebookAuth.instance.login();
+
+      if (result.status == LoginStatus.success) {
+        final AccessToken accessToken = result.accessToken!;
+
+        final credential =
+            FacebookAuthProvider.credential(accessToken.tokenString); // 여기를 수정
+
+        final newUser = await fbAuth.signInWithCredential(credential);
+
+        await usersCollection.doc(newUser.user!.uid).set({
+          'name': newUser.user!.displayName,
+          'email': newUser.user!.email,
+          'isAdmin': false,
+        });
+      } else {
+        throw Exception('Facebook sign in failed: ${result.status}');
+      }
+    } catch (e) {
+      print('facebook error: $e');
+      throw handleException(e);
+    }
+  }
 
   Future<void> signout() async {
     try {
