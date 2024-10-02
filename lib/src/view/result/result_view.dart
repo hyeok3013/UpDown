@@ -2,7 +2,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:up_down/src/provider/home_repository_provider.dart';
 import 'package:up_down/src/view/result/result_view_model.dart';
+import 'package:up_down/util/helper/firebase_helper.dart';
+import 'package:up_down/util/router/route_names.dart';
 
 import 'result_view_state.dart';
 
@@ -55,20 +58,32 @@ class _ResultViewState extends ConsumerState<ResultView> {
   }
 }
 
-class VoteResultCard extends StatelessWidget {
+class VoteResultCard extends ConsumerWidget {
   final VoteResultItem item;
 
   const VoteResultCard({super.key, required this.item});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final bool isCompleted = DateTime.now().isAfter(item.roomEndDate);
 
     return GestureDetector(
       onTap: isCompleted
           ? null
           : () {
-              context.push('/chat/vote/${item.id}');
+              ref
+                  .read(homeRepositoryProvider)
+                  .addParticipant(item.id, fbAuth.currentUser!.uid);
+              context.goNamed(
+                RouteNames.vote,
+                pathParameters: {'roomId': item.id}, // roomId를 경로로 전달
+                extra: {
+                  'roomId': item.id,
+                  'roomName': item.title,
+                  'personName': item.personName,
+                  'participants': item.participants
+                }, // 필요한 데이터를 Map으로 전달
+              );
             },
       child: Card(
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),

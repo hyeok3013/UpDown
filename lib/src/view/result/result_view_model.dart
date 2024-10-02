@@ -110,6 +110,8 @@ class ResultViewModel extends StateNotifier<ResultViewState> {
           id: doc.id,
           title: data['roomName'] ?? '',
           imageUrl: data['imageUrl'] ?? '',
+          personName: data['personName'] ?? 'NoName',
+          participants: List<String>.from(data['participants'] ?? []),
           forPercentage: forPercentage,
           againstPercentage: againstPercentage,
           isWinner: voteData.guiltyCount > voteData.notGuiltyCount,

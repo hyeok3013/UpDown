@@ -15,6 +15,8 @@ class VoteResultItem with _$VoteResultItem {
   const factory VoteResultItem({
     required String id,
     required String title,
+    required String personName,
+    required List<String> participants,
     required String imageUrl,
     required double forPercentage,
     required double againstPercentage,
