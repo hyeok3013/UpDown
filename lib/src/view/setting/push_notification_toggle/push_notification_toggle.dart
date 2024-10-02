@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PushNotificationToggle extends StatefulWidget {
-  const PushNotificationToggle({super.key});
+import '../../../provider/push_notification_provider.dart';
 
-  @override
-  State<PushNotificationToggle> createState() => PushNotificationToggleState();
-}
-
-class PushNotificationToggleState extends State<PushNotificationToggle> {
-  bool _pushNotificationToggle = true;
-
-  void _togglePushNotifications(bool enable) {
-    setState(() {
-      _pushNotificationToggle = enable;
-    });
-  }
+class PushNotificationToggle extends ConsumerWidget {
+  const PushNotificationToggle({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pushNotificationEnabled = ref.watch(pushNotificationEnabledProvider);
+    final pushNotificationService = ref.watch(pushNotificationServiceProvider);
+    final localNotificationService =
+        ref.watch(localNotificationServiceProvider);
+
     return ListTile(
-      enabled: _pushNotificationToggle,
+      enabled: pushNotificationEnabled,
       title: const Text('Push Notification'),
-      subtitle: Text('Enabled: $_pushNotificationToggle'),
+      subtitle: Text('Enabled: $pushNotificationEnabled'),
       trailing: Switch(
-        onChanged: (bool? value) {
-          _togglePushNotifications(value!);
+        onChanged: (bool value) {
+          ref.read(pushNotificationEnabledProvider.notifier).state = value;
+          pushNotificationService.setNotificationEnabled(value);
+          localNotificationService.showNotification(
+            '알림 설정',
+            '알림 설정이 변경되었습니다.',
+          );
         },
-        value: _pushNotificationToggle,
+        value: pushNotificationEnabled,
       ),
     );
   }

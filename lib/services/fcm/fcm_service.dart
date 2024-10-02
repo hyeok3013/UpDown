@@ -10,6 +10,13 @@ class PushNotificationService {
   final FirebaseFunctions _functions =
       FirebaseFunctions.instanceFor(region: 'asia-northeast3');
 
+  bool _isNotificationEnabled = true; //^ 알림 활성화 상태를 저장하는 변수
+
+  void setNotificationEnabled(bool enabled) {
+    //^ 알림 활성화 상태를 설정하는 메서드
+    _isNotificationEnabled = enabled;
+  }
+
   Future<void> initialize() async {
     try {
       await _requestPermissions();
@@ -20,6 +27,7 @@ class PushNotificationService {
   }
 
   Future<void> updateFCMToken(String token) async {
+    if (!_isNotificationEnabled) return; //^ 알림이 비활성화되어 있으면 토큰 업데이트 건너뛰기
     try {
       User? user = _auth.currentUser;
       if (user != null) {
@@ -40,6 +48,7 @@ class PushNotificationService {
     required String body,
     required String pushToken,
   }) async {
+    if (!_isNotificationEnabled) return; //^ 알림이 비활성화되어 있으면 알림 전송 건너뛰기
     try {
       // 여기에 기존의 sendNotification 로직을 유지합니다.
     } catch (e) {
@@ -59,6 +68,7 @@ class PushNotificationService {
   }
 
   Future<String?> getToken() async {
+    if (!_isNotificationEnabled) return null; //^ 알림이 비활성화되어 있으면 null 반환
     try {
       return await _firebaseMessaging.getToken();
     } catch (e) {
@@ -72,6 +82,11 @@ class PushNotificationService {
     required String roomName,
     required String creatorName,
   }) async {
+    if (!_isNotificationEnabled) {
+      //^ 알림이 비활성화되어 있으면 함수 종료
+      print('Notifications are disabled. Skipping room creation notification.');
+      return;
+    }
     try {
       User? user = _auth.currentUser;
       if (user == null) {
