@@ -71,6 +71,7 @@ class CreateRoomViewModel extends _$CreateRoomViewModel {
       'createdAt': Timestamp.now(),
       'participant': [],
     });
+
     // 방 생성 후 result_view 갱신 (결과 목록 다시 불러오기)
     //
     // 상태 초기화

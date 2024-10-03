@@ -45,19 +45,6 @@ class _CreateRoomViewState extends ConsumerState<CreateRoomView> {
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: () async {
-              // 방 생성 로직
-              await viewModel.createRoom(
-                personNameController.text,
-                roomNameController.text,
-              );
-
-              // 입력 필드 초기화
-              personNameController.clear();
-              roomNameController.clear();
-
-              // 방 생성 후 홈으로 이동
-              context.go('/home');
-
               if (personNameController.text.isNotEmpty &&
                   roomNameController.text.isNotEmpty &&
                   state.roomStartDate != null &&
@@ -69,47 +56,31 @@ class _CreateRoomViewState extends ConsumerState<CreateRoomView> {
                     roomNameController.text,
                   );
 
+                  // 방 생성 후 홈으로 이동
+                  if (!context.mounted) return;
+                  context.go('/home');
+
                   // FCM 서비스를 통해 알림 전송
                   await fcmService.sendRoomCreationNotification(
                     roomName: roomNameController.text,
                     creatorName: personNameController.text,
                   );
 
-                  // try {
-                  //   HttpsCallable callable = FirebaseFunctions.instanceFor(
-                  //           region: 'asia-northeast3')
-                  //       .httpsCallable('sendPushNotification');
-                  //   final result = await callable.call({
-                  //     'title': "title",
-                  //     'body': "body",
-                  //     'token': "pushToken",
-                  //   });
-                  //   print(
-                  //       'Push notification sent successfully: ${result.data}');
-                  // } on Exception catch (e) {
-                  //   print('Failed to send push notification: $e');
-                  //   // TODO
-                  // }
-
-                  // 입력 필드 초기화
-                  personNameController.clear();
-                  roomNameController.clear();
-
-                  // 방 생성 후 홈으로 이동
-                  context.go('/home');
-
                   // 성공 메시지 표시
+                  if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('방이 생성되었고 푸시 알림이 전송되었습니다.')),
                   );
                 } catch (e) {
                   print('Error during room creation or notification: $e');
+                  if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('오류 발생: ${e.toString()}')),
                   );
                 }
               } else {
                 // 필수 입력 항목이 누락된 경우 경고 메시지 표시
+                if (!context.mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('모든 필드를 입력해주세요.')),
                 );

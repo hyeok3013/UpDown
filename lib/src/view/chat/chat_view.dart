@@ -9,7 +9,7 @@ class ChatView extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          '채팅방', // ViewModel에서 roomId를 가져옴
+          '토론방', // ViewModel에서 roomId를 가져옴
         ),
       ),
       body: const Center(

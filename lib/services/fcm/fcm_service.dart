@@ -9,11 +9,10 @@ class PushNotificationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFunctions _functions =
       FirebaseFunctions.instanceFor(region: 'asia-northeast3');
-
-  bool _isNotificationEnabled = true; //^ 알림 활성화 상태를 저장하는 변수
+  bool _isNotificationEnabled = true; // 알림 활성화 상태를 저장하는 변수
 
   void setNotificationEnabled(bool enabled) {
-    //^ 알림 활성화 상태를 설정하는 메서드
+    // 알림 활성화 상태를 설정하는 메서드
     _isNotificationEnabled = enabled;
   }
 
@@ -42,6 +41,7 @@ class PushNotificationService {
       print('Error updating FCM token: $e');
     }
   }
+  //apn 키 오류로 홈화면으로 안간다.
 
   Future<void> sendNotification({
     required String title,

@@ -336,18 +336,6 @@ class _VoteViewState extends ConsumerState<VoteView> {
                               itemCount: messages.length,
                               itemBuilder: (context, index) {
                                 final message = messages[index];
-                                print('messages[0]: ${messages[0]}');
-                                // return ListTile(
-                                //   title: Text(message.name),
-                                //   subtitle: message.message.startsWith(
-                                //           'http') // 메시지가 URL이면 이미지로 렌더링
-                                //       //이미지 크기 세팅
-                                //       ? Image.network(message.message)
-                                //       : Text(message.message), // 텍스트 메시지
-                                //   trailing: Text(
-                                //       _formatDateTime(message.sentAt.toDate())
-                                //           .toString()),
-                                // );
                                 return MessageBubble(
                                   message: message,
                                   myId: userId,
@@ -380,6 +368,7 @@ class _VoteViewState extends ConsumerState<VoteView> {
                         onPressed: () => _sendMessage(messages),
                       ),
                     ),
+                    const SizedBox(width: 10),
                   ],
                 ),
               ),
