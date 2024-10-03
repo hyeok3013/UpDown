@@ -66,7 +66,7 @@ class CreateRoomViewModel extends _$CreateRoomViewModel {
       'roomStartDate': Timestamp.fromDate(state.roomStartDate!),
       'roomEndDate': Timestamp.fromDate(state.roomEndDate!),
       'imageUrl': state.imageUrl ??
-          'https://firebasestorage.googleapis.com/v0/b/up-down-app.appspot.com/o/default_profile.png?alt=media&token=67dbee77-5ac9-4000-87c2-8357d9a38c12', // 기본 이미지 URL
+          'https://firebasestorage.googleapis.com/v0/b/up-down-app.appspot.com/o/default_profile_black.png?alt=media&token=b1f638b6-7f8d-4094-b2f3-6b0fe8370204', // 기본 이미지 URL
       'participantCount': 0, // 참가자 수 초기화
       'createdAt': Timestamp.now(),
       'participant': [],

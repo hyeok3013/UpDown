@@ -20,6 +20,7 @@ mixin _$Message {
   String get name => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
   Timestamp get sentAt => throw _privateConstructorUsedError;
+  bool get isMyTurn => throw _privateConstructorUsedError;
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +33,12 @@ abstract class $MessageCopyWith<$Res> {
   factory $MessageCopyWith(Message value, $Res Function(Message) then) =
       _$MessageCopyWithImpl<$Res, Message>;
   @useResult
-  $Res call({String userId, String name, String message, Timestamp sentAt});
+  $Res call(
+      {String userId,
+      String name,
+      String message,
+      Timestamp sentAt,
+      bool isMyTurn});
 }
 
 /// @nodoc
@@ -54,6 +60,7 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
     Object? name = null,
     Object? message = null,
     Object? sentAt = null,
+    Object? isMyTurn = null,
   }) {
     return _then(_value.copyWith(
       userId: null == userId
@@ -72,6 +79,10 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.sentAt
           : sentAt // ignore: cast_nullable_to_non_nullable
               as Timestamp,
+      isMyTurn: null == isMyTurn
+          ? _value.isMyTurn
+          : isMyTurn // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -83,7 +94,12 @@ abstract class _$$MessageImplCopyWith<$Res> implements $MessageCopyWith<$Res> {
       __$$MessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String userId, String name, String message, Timestamp sentAt});
+  $Res call(
+      {String userId,
+      String name,
+      String message,
+      Timestamp sentAt,
+      bool isMyTurn});
 }
 
 /// @nodoc
@@ -103,6 +119,7 @@ class __$$MessageImplCopyWithImpl<$Res>
     Object? name = null,
     Object? message = null,
     Object? sentAt = null,
+    Object? isMyTurn = null,
   }) {
     return _then(_$MessageImpl(
       userId: null == userId
@@ -121,6 +138,10 @@ class __$$MessageImplCopyWithImpl<$Res>
           ? _value.sentAt
           : sentAt // ignore: cast_nullable_to_non_nullable
               as Timestamp,
+      isMyTurn: null == isMyTurn
+          ? _value.isMyTurn
+          : isMyTurn // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -132,7 +153,8 @@ class _$MessageImpl with DiagnosticableTreeMixin implements _Message {
       {required this.userId,
       required this.name,
       required this.message,
-      required this.sentAt});
+      required this.sentAt,
+      required this.isMyTurn});
 
   @override
   final String userId;
@@ -142,10 +164,12 @@ class _$MessageImpl with DiagnosticableTreeMixin implements _Message {
   final String message;
   @override
   final Timestamp sentAt;
+  @override
+  final bool isMyTurn;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Message(userId: $userId, name: $name, message: $message, sentAt: $sentAt)';
+    return 'Message(userId: $userId, name: $name, message: $message, sentAt: $sentAt, isMyTurn: $isMyTurn)';
   }
 
   @override
@@ -156,7 +180,8 @@ class _$MessageImpl with DiagnosticableTreeMixin implements _Message {
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('message', message))
-      ..add(DiagnosticsProperty('sentAt', sentAt));
+      ..add(DiagnosticsProperty('sentAt', sentAt))
+      ..add(DiagnosticsProperty('isMyTurn', isMyTurn));
   }
 
   @override
@@ -167,11 +192,14 @@ class _$MessageImpl with DiagnosticableTreeMixin implements _Message {
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.message, message) || other.message == message) &&
-            (identical(other.sentAt, sentAt) || other.sentAt == sentAt));
+            (identical(other.sentAt, sentAt) || other.sentAt == sentAt) &&
+            (identical(other.isMyTurn, isMyTurn) ||
+                other.isMyTurn == isMyTurn));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, userId, name, message, sentAt);
+  int get hashCode =>
+      Object.hash(runtimeType, userId, name, message, sentAt, isMyTurn);
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
@@ -187,7 +215,8 @@ abstract class _Message implements Message {
       {required final String userId,
       required final String name,
       required final String message,
-      required final Timestamp sentAt}) = _$MessageImpl;
+      required final Timestamp sentAt,
+      required final bool isMyTurn}) = _$MessageImpl;
 
   @override
   String get userId;
@@ -197,6 +226,8 @@ abstract class _Message implements Message {
   String get message;
   @override
   Timestamp get sentAt;
+  @override
+  bool get isMyTurn;
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.

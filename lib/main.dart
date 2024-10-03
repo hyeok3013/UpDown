@@ -121,11 +121,11 @@ class MyApp extends ConsumerWidget {
         colorScheme: isDarkMode
             ? const ColorScheme.dark(
                 primary: AppColors.darkfocusColor,
-                secondary: Colors.deepPurpleAccent,
+                secondary: AppColors.darkfocusColor,
               )
             : const ColorScheme.light(
                 primary: AppColors.lightfocusColor,
-                secondary: Colors.deepPurpleAccent,
+                secondary: AppColors.lightfocusColor,
               ),
         useMaterial3: true,
       ),

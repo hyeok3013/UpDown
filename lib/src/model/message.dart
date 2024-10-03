@@ -11,6 +11,7 @@ class Message with _$Message {
     required String name,
     required String message,
     required Timestamp sentAt,
+    required bool isMyTurn,
   }) = _Message;
 
   factory Message.fromDoc(DocumentSnapshot messageDoc) {
@@ -20,6 +21,7 @@ class Message with _$Message {
       name: messageDate['name'],
       message: messageDate['message'],
       sentAt: messageDate['sentAt'],
+      isMyTurn: messageDate['isMyTurn'],
     );
   }
 }

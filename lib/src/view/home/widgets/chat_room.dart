@@ -13,7 +13,7 @@ class ChatRoom extends ConsumerWidget {
   final String roomStartDate;
   final String roomEndDate;
   final String imageUrl; // 추가된 부분: 이미지 URL
-  final List<String> participants;
+  final List<String> participants; // 추가된 부분: 이미지 URL
 
   const ChatRoom({
     super.key,
@@ -71,14 +71,12 @@ class ChatRoom extends ConsumerWidget {
                 height: 70,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 70,
-                    height: 70,
-                    color: Colors.grey[300],
-                    child: const Icon(
-                      Icons.error,
-                      size: 30,
-                      color: Colors.red,
+                  return ClipOval(
+                    child: Image.asset(
+                      'assets/images/default_profile_black.png',
+                      width: 70,
+                      height: 70,
+                      fit: BoxFit.cover,
                     ),
                   );
                 },
@@ -88,7 +86,7 @@ class ChatRoom extends ConsumerWidget {
             Container(
               width: 1,
               height: 75,
-              color: Colors.deepPurple,
+              color: Colors.redAccent,
             ),
             const SizedBox(width: 14.0),
             Expanded(

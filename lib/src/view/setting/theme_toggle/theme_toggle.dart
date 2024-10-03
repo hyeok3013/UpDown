@@ -12,8 +12,11 @@ class ThemeToggle extends ConsumerWidget {
     final themeNotifier = ref.read(themeProvider.notifier);
 
     return ListTile(
-      title: Text(isDarkMode ? 'Dark Mode' : 'Light Mode'),
-      subtitle: const Text('Switch between dark and light themes'),
+      title: Text(
+        isDarkMode ? '다크 모드' : '라이트 모드',
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      subtitle: const Text('어두운 모드와 밝은 모드 전환'),
       trailing: Switch(
         onChanged: (bool? value) {
           themeNotifier.toggleTheme();

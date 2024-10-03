@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:up_down/src/model/message.dart';
 import 'package:up_down/util/helper/firebase_helper.dart';
 import 'package:up_down/util/helper/handle_exception.dart';
@@ -43,6 +44,7 @@ class MessageRepository {
     required String name,
     required String message,
     required Timestamp sentAt,
+    required bool isMyTurn,
   }) async {
     try {
       await roomsCollection.doc(roomId).collection('messages').add({
@@ -50,6 +52,7 @@ class MessageRepository {
         'name': name,
         'message': message,
         'sentAt': sentAt,
+        'isMyTurn': isMyTurn,
       });
     } catch (e) {
       throw handleException(e);

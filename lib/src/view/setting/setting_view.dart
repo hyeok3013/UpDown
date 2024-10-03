@@ -6,6 +6,7 @@ import 'package:up_down/src/view/setting/change_password/change_password_dialog.
 import 'package:up_down/src/view/setting/push_notification_toggle/push_notification_toggle.dart';
 import 'package:up_down/src/view/setting/reauthenticate/reauthenticate_dialog.dart';
 import 'package:up_down/src/view/setting/theme_toggle/theme_toggle.dart';
+import 'package:up_down/theme/colors.dart';
 
 import '../../../component/error_dialog.dart';
 import '../../../util/helper/firebase_helper.dart';
@@ -38,7 +39,7 @@ class _SettingViewState extends ConsumerState<SettingView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Setting'),
+        title: const Text('설정'),
       ),
       body: profileState.when(
         skipLoadingOnRefresh: false,
@@ -49,17 +50,19 @@ class _SettingViewState extends ConsumerState<SettingView> {
               children: [
                 Card(
                   child: ListTile(
-                    leading: const FlutterLogo(size: 72.0),
+                    leading: ClipOval(
+                        child: Image.asset(
+                            'assets/images/default_profile_black.png')),
                     title: Text(appUser.name),
                     subtitle: Text(appUser.email),
                     contentPadding: const EdgeInsets.all(20),
                   ),
                 ),
-                // const FlutterLogo(size: 72.0),
-                // Text(appUser.name),
-                // Text(appUser.email),
                 ListTile(
-                  title: const Text('Change Name'),
+                  title: const Text(
+                    '닉네임 변경',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   onTap: () => showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -68,7 +71,10 @@ class _SettingViewState extends ConsumerState<SettingView> {
                   ),
                 ),
                 ListTile(
-                  title: const Text('Change Password'),
+                  title: const Text(
+                    '비밀번호 변경',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   onTap: () async {
                     final result = await showDialog(
                       context: context,
@@ -89,6 +95,15 @@ class _SettingViewState extends ConsumerState<SettingView> {
                 const PushNotificationToggle(),
                 const ThemeToggle(),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey.shade300,
+                    minimumSize: const Size(double.infinity, 70),
+                    shape: const RoundedRectangleBorder(
+                      // 모양을 네모로 설정
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      // 둥근 정도를 0으로 설정 (네모 모양)
+                    ),
+                  ),
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -111,9 +126,26 @@ class _SettingViewState extends ConsumerState<SettingView> {
                       ),
                     );
                   },
-                  child: const Text('Sign out'),
+                  child: const Text(
+                    '로그아웃',
+                    style: TextStyle(
+                      color: Colors.redAccent,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
+                const SizedBox(height: 10),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.focusRedColor,
+                    minimumSize: const Size(double.infinity, 70),
+                    shape: const RoundedRectangleBorder(
+                      // 모양을 네모로 설정
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      // 둥근 정도를 0으로 설정 (네모 모양)
+                    ),
+                  ),
                   onPressed: () async {
                     final result = await showDialog(
                       context: context,
@@ -130,7 +162,13 @@ class _SettingViewState extends ConsumerState<SettingView> {
                       );
                     }
                   },
-                  child: const Text('Delete Account'),
+                  child: const Text(
+                    '계정 삭제',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ],
             ),

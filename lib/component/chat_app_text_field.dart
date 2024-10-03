@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:up_down/theme/colors.dart';
 
 class ChatAppTextField extends StatefulWidget {
   const ChatAppTextField({
@@ -25,7 +26,8 @@ class _ChatAppTextFieldState extends State<ChatAppTextField> {
       decoration: InputDecoration(
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        hintText: 'Enter message...',
+        hintText: '메시지를 입력하세요',
+        hintStyle: const TextStyle(color: AppColors.greyColor),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.onSurface,

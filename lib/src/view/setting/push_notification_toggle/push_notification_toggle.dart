@@ -3,22 +3,42 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../provider/push_notification_provider.dart';
 
-class PushNotificationToggle extends ConsumerWidget {
+class PushNotificationToggle extends ConsumerStatefulWidget {
   const PushNotificationToggle({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _PushNotificationToggleState createState() => _PushNotificationToggleState();
+}
+
+class _PushNotificationToggleState
+    extends ConsumerState<PushNotificationToggle> {
+  bool pushNotificationToggle = true; // 초기값 설정
+
+  void togglePushNotifications(bool enable) {
+    setState(() {
+      pushNotificationToggle = enable;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final pushNotificationEnabled = ref.watch(pushNotificationEnabledProvider);
     final pushNotificationService = ref.watch(pushNotificationServiceProvider);
     final localNotificationService =
         ref.watch(localNotificationServiceProvider);
 
     return ListTile(
-      enabled: pushNotificationEnabled,
-      title: const Text('Push Notification'),
-      subtitle: Text('Enabled: $pushNotificationEnabled'),
+      enabled: pushNotificationToggle,
+      title: const Text(
+        '푸쉬 알림 설정',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      subtitle: pushNotificationToggle
+          ? const Text('허용 여부: 켜짐')
+          : const Text('허용 여부: 꺼짐'),
       trailing: Switch(
         onChanged: (bool value) {
+          togglePushNotifications(value);
           ref.read(pushNotificationEnabledProvider.notifier).state = value;
           pushNotificationService.setNotificationEnabled(value);
           localNotificationService.showNotification(

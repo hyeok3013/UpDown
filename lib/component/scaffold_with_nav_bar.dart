@@ -27,11 +27,10 @@ class ScaffoldWithNavBar extends StatelessWidget {
         // branches of the shell route, which can be fetched using
         // `navigationShell.route.branches`.
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.how_to_vote), label: 'Result'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: '채팅'),
+          BottomNavigationBarItem(icon: Icon(Icons.how_to_vote), label: '투표결과'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: '설정'),
         ],
         currentIndex: navigationShell.currentIndex,
         onTap: (int index) => _onTap(context, index),

@@ -1,42 +1,205 @@
-//  -  -  -  -  -  -  -  -  -  -  -  -  -
-// 운영자가 방 생성하면, 앱을 사용하는 모든 사람들에게
-// 방이 열렸다고 알림을 보낼 수 있는지.
-// 아까 페이지 말고 코드만 만져가지고
-// 코드만 가지고 하는 방법이 구독이다.
-//  -  -  -  -  -  -
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:up_down/services/fcm/fcm_service.dart';
+import 'package:up_down/src/view/home/create_room/create_room_view_model.dart';
+import 'package:up_down/theme/colors.dart';
 
-//----------------------------------------------
-//-------------------------------------
-//-------------------------
-//------------
+class CreateRoomView extends ConsumerStatefulWidget {
+  const CreateRoomView({super.key});
 
-//코드상에서 인앱 에서 해야 한다.
+  @override
+  ConsumerState<CreateRoomView> createState() => _CreateRoomViewState();
+}
 
-//게시물등록할 파이어베이스 펑션이용해서 fcm을 날려야 한다.
-// 앱 사용하는 모든 사람 -(주제 구독 다 시켜두고 구독 한 사람)
-//-------------------------
+class _CreateRoomViewState extends ConsumerState<CreateRoomView> {
+  final TextEditingController personNameController = TextEditingController();
+  final TextEditingController roomNameController = TextEditingController();
 
-//앱을 키면 구독을 전체 유저로 시켜두고
+  // PushNotificationService 인스턴스 추가
+  final PushNotificationService fcmService = PushNotificationService();
 
-//채팅방 방법
-//채팅방에서 채팅 백그라운드로 메시지오는것도 같은이치다
+  @override
+  void dispose() {
+    personNameController.dispose();
+    roomNameController.dispose();
+    super.dispose();
+  }
 
-// 채팅보낼때 fcm도 상대방 토큰에 같이 보낸다.
-//토큰도 같이 보내게 해야 한다. 센드하면 펑션 사용해서 토큰과 데이터를 실어서 같이 보낸다.
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = ref.watch(createRoomViewModelProvider.notifier);
+    final state = ref.watch(createRoomViewModelProvider);
 
-//=======================================
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('방 생성'),
+        leading: IconButton(
+          onPressed: () {
+            context.go('/home');
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+        // 방 생성 버튼을 체크 아이콘으로 변경하여 AppBar에 추가
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: () async {
+              // 방 생성 로직
+              await viewModel.createRoom(
+                personNameController.text,
+                roomNameController.text,
+              );
 
-//  프린트로 로그 계속 찍어봐서 어디가 문젠지 확인해야 한다.
-// 1->2->3,4 머릿속 구상이 안되는데, 에러도 안남 ㅡ 알림만 안옴
+              // 입력 필드 초기화
+              personNameController.clear();
+              roomNameController.clear();
 
-//토큰 말고 구독하는 방법이 있다.
-//구독이 되있으면 구독이 된 기기에 알람이 간다.
+              // 방 생성 후 홈으로 이동
+              context.go('/home');
 
-//주제가 있으면 주제 구독을 해두면 거기에 맞춰서 온다.
-// 당근 커뮤니티에 노래, 볼링등의 단체 푸쉬
+              if (personNameController.text.isNotEmpty &&
+                  roomNameController.text.isNotEmpty &&
+                  state.roomStartDate != null &&
+                  state.roomEndDate != null) {
+                try {
+                  // 방 생성 로직
+                  await viewModel.createRoom(
+                    personNameController.text,
+                    roomNameController.text,
+                  );
 
-// 토큰과 주제구독으로 해보기
+                  // 입력 필드 초기화
+                  personNameController.clear();
+                  roomNameController.clear();
 
-//(주제 구독은 토큰 필요 없을 수도..)
-//토큰 안쓰고 하는게 구독일수도...
-//
+                  // 방 생성 후 홈으로 이동
+                  context.go('/home');
+
+                  // FCM 서비스를 통해 알림 전송
+                  await fcmService.sendRoomCreationNotification(
+                    roomName: roomNameController.text,
+                    creatorName: personNameController.text,
+                  );
+
+                  // 성공 메시지 표시
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('방이 생성되었고 푸시 알림이 전송되었습니다.')),
+                  );
+                } catch (e) {
+                  print('Error during room creation or notification: $e');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('오류 발생: ${e.toString()}')),
+                  );
+                }
+              } else {
+                // 필수 입력 항목이 누락된 경우 경고 메시지 표시
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('모든 필드를 입력해주세요.')),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(40.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: personNameController,
+              decoration: const InputDecoration(labelText: '인물 이름을 입력해주세요.'),
+            ),
+            TextField(
+              controller: roomNameController,
+              decoration: const InputDecoration(labelText: '논란 제목을 입력해주세요.'),
+            ),
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: () async {
+                await viewModel.pickAndUploadImage();
+              },
+              child: Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                decoration: BoxDecoration(
+                  color: AppColors.darkfocusColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: Text(
+                    state.imageUrl == null ? '이미지 선택' : '이미지 업로드 완료',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 50),
+            GestureDetector(
+              onTap: () async {
+                final pickedDate = await selectDate(context);
+                if (pickedDate != null) {
+                  viewModel.setRoomStartDate(pickedDate);
+                }
+              },
+              child: Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                decoration: BoxDecoration(
+                  color: AppColors.darkfocusColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: Text(
+                    state.roomStartDate == null
+                        ? '방 시작 날짜 선택'
+                        : '방 시작 날짜: ${state.roomStartDate!.toLocal().toString().substring(0, 10)}',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () async {
+                final pickedDate = await selectDate(context);
+                if (pickedDate != null) {
+                  viewModel.setRoomEndDate(pickedDate);
+                }
+              },
+              child: Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                decoration: BoxDecoration(
+                  color: AppColors.darkfocusColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: Text(
+                    state.roomEndDate == null
+                        ? '방 종료 날짜 선택'
+                        : '방 종료 날짜: ${state.roomEndDate!.toLocal().toString().substring(0, 10)}',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<DateTime?> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    return picked;
+  }
+}
