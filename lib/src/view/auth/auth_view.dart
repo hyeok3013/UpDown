@@ -213,7 +213,7 @@ class _AuthViewState extends ConsumerState<AuthView> {
                               }
                             },
                             child: Image.asset(
-                              "assets/images/kakao.png",
+                              "assets/icons/kakao.png",
                               width: 25,
                               fit: BoxFit.fill,
                               color: const Color(0xFFFEE500),
