@@ -111,8 +111,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:up_down/src/model/vote.dart';
-import 'package:up_down/src/model/message.dart';
 import 'package:up_down/src/provider/home_repository_provider.dart';
 import 'package:up_down/src/provider/image_repository_provider.dart';
 import 'package:up_down/src/provider/message_repository_provider.dart';

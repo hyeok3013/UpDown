@@ -49,9 +49,9 @@ class MessageBubble extends ConsumerWidget {
                             Text(
                               _formatDateTime(message.sentAt.toDate())
                                   .toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 10,
-                                color: Colors.white.withOpacity(0.5),
+                                color: AppColors.greyColor,
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -69,9 +69,9 @@ class MessageBubble extends ConsumerWidget {
                             Text(
                               _formatDateTime(message.sentAt.toDate())
                                   .toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 10,
-                                color: Colors.white.withOpacity(0.5),
+                                color: AppColors.greyColor,
                               ),
                             ),
                           ],

@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCHBCKbJ0Yrfd4U0JzY3g1hio3OdwrY34Y',
-    appId: '1:364848733451:android:a506ded027a261a59fd60e',
+    appId: '1:364848733451:android:0838305979c13afe9fd60e',
     messagingSenderId: '364848733451',
     projectId: 'up-down-app',
     storageBucket: 'up-down-app.appspot.com',

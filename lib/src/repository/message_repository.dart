@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:up_down/src/model/message.dart';
 import 'package:up_down/util/helper/firebase_helper.dart';
 import 'package:up_down/util/helper/handle_exception.dart';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../component/error_dialog.dart';
+import '../../../../theme/colors.dart';
 import '../../../model/custom_error.dart';
 import 'delete_account_provider.dart';
 
@@ -41,19 +42,22 @@ class _DeleteAccountDialogState extends ConsumerState<DeleteAccountDialog> {
     );
 
     return AlertDialog(
-      title: const Text('Delete Account'),
-      content: const Text(
-          'Are you sure you want to delete your account? This action cannot be undone.'),
+      title: const Text('계정 삭제'),
+      content: const Text('정말로 계정을 삭제하시겠습니까? 나중에 취소할 수 없습니다.'),
       actions: [
         TextButton(
           onPressed: () {
             GoRouter.of(context).pop();
           },
-          child: const Text('Cancle'),
+          child: const Text('취소'),
         ),
         TextButton(
           onPressed: () => _deleteAccount(),
-          child: const Text('Delete'),
+          style: TextButton.styleFrom(
+            backgroundColor: AppColors.focusRedColor,
+            foregroundColor: Colors.white,
+          ),
+          child: const Text('삭제'),
         ),
       ],
     );

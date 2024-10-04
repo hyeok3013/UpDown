@@ -8,6 +8,7 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:up_down/services/fcm/fcm_service.dart';
 import 'package:up_down/theme/colors.dart';
 import 'package:up_down/util/router/route_path.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 import 'firebase_options.dart';
 import 'src/view/setting/theme_toggle/theme_provider.dart';
@@ -27,8 +28,13 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Firebase Analytics 초기화 (필요한 경우)
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.playIntegrity,
+    appleProvider: AppleProvider.deviceCheck,
+  );
+
+  // // Firebase Analytics 초기화 (필요한 경우)
+  // FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   // 푸시 알림 서비스 초기화
   final pushNotificationService = PushNotificationService();
@@ -118,14 +124,17 @@ class MyApp extends ConsumerWidget {
       title: 'UP DOWN',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          surfaceTintColor: isDarkMode ? Colors.black : Colors.white,
+        ),
         colorScheme: isDarkMode
             ? const ColorScheme.dark(
                 primary: AppColors.darkfocusColor,
-                secondary: AppColors.darkfocusColor,
+                // secondary: AppColors.darkfocusColor,
               )
             : const ColorScheme.light(
                 primary: AppColors.lightfocusColor,
-                secondary: AppColors.lightfocusColor,
+                // secondary: AppColors.lightfocusColor,
               ),
         useMaterial3: true,
       ),

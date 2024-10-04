@@ -60,7 +60,7 @@ class _ProfileEditDialogState extends ConsumerState<ChangePasswordDialog> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: AlertDialog(
-        title: const Text('Change Password'),
+        title: const Text('비밀번호 변경'),
         content: Form(
           key: _formKey,
           autovalidateMode: _autovalidateMode,
@@ -78,7 +78,7 @@ class _ProfileEditDialogState extends ConsumerState<ChangePasswordDialog> {
             loading: () => const CircularProgressIndicator(),
             orElse: () => TextButton(
               onPressed: _submit,
-              child: const Text('Save'),
+              child: const Text('저장'),
             ),
           )),
         ],

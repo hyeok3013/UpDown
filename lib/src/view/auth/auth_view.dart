@@ -89,151 +89,159 @@ class _AuthViewState extends ConsumerState<AuthView> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: _autovalidateMode,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                isDarkMode
-                    ? Image.asset(
-                        'assets/images/up_down_text_logo_white.png',
-                        width: 150,
-                      )
-                    : Image.asset(
-                        'assets/images/up_down_text_logo.png',
-                        width: 150,
+        body: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: _autovalidateMode,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      isDarkMode
+                          ? Image.asset(
+                              'assets/images/up_down_text_logo_white.png',
+                              width: 150,
+                            )
+                          : Image.asset(
+                              'assets/images/up_down_text_logo.png',
+                              width: 150,
+                            ),
+                      EmailFormField(emailController: _emailController),
+                      PasswordFormField(
+                          passwordController: _passwordController),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _rememberMe,
+                            onChanged: (value) {
+                              setState(() {
+                                _rememberMe = value ?? false;
+                              });
+                            },
+                          ),
+                          GestureDetector(
+                            onTap: () => setState(() {
+                              _rememberMe = !_rememberMe;
+                            }),
+                            child: const Text('자동 로그인'),
+                          ),
+                        ],
                       ),
-                EmailFormField(emailController: _emailController),
-                PasswordFormField(passwordController: _passwordController),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _rememberMe,
-                      onChanged: (value) {
-                        setState(() {
-                          _rememberMe = value ?? false;
-                        });
-                      },
-                    ),
-                    GestureDetector(
-                      onTap: () => setState(() {
-                        _rememberMe = !_rememberMe;
-                      }),
-                      child: const Text('자동 로그인'),
-                    ),
-                  ],
-                ),
-                signinState.maybeWhen(
-                  loading: () => const CircularProgressIndicator(),
-                  orElse: () => ElevatedButton(
-                    onPressed: _signInWithEmail,
-                    child: const Text(
-                      '로그인하기',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                      signinState.maybeWhen(
+                        loading: () => const CircularProgressIndicator(),
+                        orElse: () => ElevatedButton(
+                          onPressed: _signInWithEmail,
+                          child: const Text(
+                            '로그인하기',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const PasswordResetDialog();
+                              },
+                            );
+                          },
+                          child: const Text('비밀번호를 잊으셨나요?')),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              endIndent: 20,
+                            ),
+                          ),
+                          Text('or'),
+                          Expanded(
+                            child: Divider(
+                              indent: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Text(
+                        'SNS계정으로 간편하게 로그인하세요',
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          OutlinedButton(
+                            onPressed: _signInWithGoogle,
+                            child: Image.asset(
+                              "assets/icons/google.png",
+                              width: 25,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          OutlinedButton(
+                            onPressed: _signInWithFacebook,
+                            child: Image.asset(
+                              "assets/icons/facebook.png",
+                              width: 25,
+                              fit: BoxFit.fill,
+                              color: const Color(0xFF0966FF),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          OutlinedButton(
+                            onPressed: () async {
+                              try {
+                                await ref
+                                    .read(authRepositoryProvider)
+                                    .signInWithKakao();
+                                if (!context.mounted) return;
+                                context.go('/home'); // 로그인 성공 후 홈 화면으로 이동
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          'Failed to sign in with Kakao: $e')),
+                                );
+                              }
+                            },
+                            child: Image.asset(
+                              "assets/images/kakao.png",
+                              width: 25,
+                              fit: BoxFit.fill,
+                              color: const Color(0xFFFEE500),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('계정이 없으신가요?'),
+                          TextButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const SignUpDialog();
+                                },
+                              );
+                            },
+                            child: const Text('가입하기'),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
                 ),
-                TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const PasswordResetDialog();
-                        },
-                      );
-                    },
-                    child: const Text('비밀번호를 잊으셨나요?')),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        endIndent: 20,
-                      ),
-                    ),
-                    Text('or'),
-                    Expanded(
-                      child: Divider(
-                        indent: 20,
-                      ),
-                    ),
-                  ],
-                ),
-                const Text(
-                  'SNS계정으로 간편하게 로그인하세요',
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    OutlinedButton(
-                      onPressed: _signInWithGoogle,
-                      child: Image.asset(
-                        "assets/icons/google.png",
-                        width: 25,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    OutlinedButton(
-                      onPressed: _signInWithFacebook,
-                      child: Image.asset(
-                        "assets/icons/facebook.png",
-                        width: 25,
-                        fit: BoxFit.fill,
-                        color: const Color(0xFF0966FF),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    OutlinedButton(
-                      onPressed: () async {
-                        try {
-                          await ref
-                              .read(authRepositoryProvider)
-                              .signInWithKakao();
-                          if (!context.mounted) return;
-                          context.go('/home'); // 로그인 성공 후 홈 화면으로 이동
-                        } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content:
-                                    Text('Failed to sign in with Kakao: $e')),
-                          );
-                        }
-                      },
-                      child: Image.asset(
-                        "assets/images/kakao.png",
-                        width: 25,
-                        fit: BoxFit.fill,
-                        color: const Color(0xFFFEE500),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('계정이 없으신가요?'),
-                    TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return const SignUpDialog();
-                          },
-                        );
-                      },
-                      child: const Text('가입하기'),
-                    ),
-                  ],
-                )
-              ],
+              ),
             ),
           ),
         ),

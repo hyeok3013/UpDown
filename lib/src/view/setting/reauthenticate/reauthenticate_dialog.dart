@@ -82,7 +82,7 @@ class _ReauthenticateDialogState extends ConsumerState<ReauthenticateDialog> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: AlertDialog(
-        title: const Text('Reauthenticate'),
+        title: const Text('본인인증'),
         content: Form(
           key: _formKey,
           autovalidateMode: _autovalidateMode,
@@ -103,7 +103,7 @@ class _ReauthenticateDialogState extends ConsumerState<ReauthenticateDialog> {
                 ? const CircularProgressIndicator()
                 : TextButton(
                     onPressed: _submit,
-                    child: const Text('Submit'),
+                    child: const Text('확인'),
                   ),
           ),
         ],

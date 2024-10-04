@@ -12,4 +12,3 @@ analyzer:
     - '**/*.g.dart'
   errors:
     invalid_annotation_target: ignore
-    library_private_types_in_public_api: ignore

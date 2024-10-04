@@ -109,19 +109,18 @@ class _SettingViewState extends ConsumerState<SettingView> {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: const Text('Sign Out'),
-                          content:
-                              const Text('Are you sure you want to sign out?'),
+                          title: const Text('로그아웃'),
+                          content: const Text('정말로 로그아웃 하시겠습니까?'),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 context.pop();
                               },
-                              child: const Text('Cancle'),
+                              child: const Text('취소'),
                             ),
                             TextButton(
                               onPressed: () => _signOut(),
-                              child: const Text('Sign Out'),
+                              child: const Text('로그아웃'),
                             ),
                           ],
                         ),

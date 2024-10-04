@@ -52,8 +52,7 @@ class _SignUpDialogState extends ConsumerState<SignUpDialog> {
           data: (_) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(
-                    'Welcome, ${_nameController.text}! Thank you for joining us.'),
+                content: Text('${_nameController.text}님, 환영합니다!'),
               ),
             );
           },
@@ -66,7 +65,7 @@ class _SignUpDialogState extends ConsumerState<SignUpDialog> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: AlertDialog(
-        title: const Text('Get Started'),
+        title: const Text('가입하기'),
         content: Form(
           key: _formKey,
           autovalidateMode: _autovalidateMode,
