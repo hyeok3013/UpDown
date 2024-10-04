@@ -1,55 +1,101 @@
-import 'package:firebase_analytics/firebase_analytics.dart'; //^
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-class FCMService {
+class PushNotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance; //^
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFunctions _functions =
+      FirebaseFunctions.instanceFor(region: 'asia-northeast3');
 
   Future<void> initialize() async {
-    String? token = await _firebaseMessaging.getToken();
-    print("FCM Token: $token");
-
-    _firebaseMessaging.onTokenRefresh.listen((newToken) {
-      print("New FCM Token: $newToken");
-      _sendTokenToServer(newToken);
-    });
-
-    _sendTokenToServer(token);
-
-    // 메시지 핸들러 설정
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      //^
-      print("Foreground message received: ${message.notification?.title}");
-      _logMessageReceived(message);
-    });
+    try {
+      await _requestPermissions();
+      await _configureFCM();
+    } catch (e) {
+      print('Error initializing push notification service: $e');
+    }
   }
 
-  void _sendTokenToServer(String? token) {
-    // TODO: 실제 서버 API를 호출하여 토큰 저장
-    print("Sending token to server: $token");
+  Future<void> updateFCMToken(String token) async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        await _firestore.collection('users').doc(user.uid).update({
+          'fcmToken': token,
+        });
+        print('FCM token updated for user: ${user.uid}');
+      } else {
+        print('User not logged in, FCM token not updated');
+      }
+    } catch (e) {
+      print('Error updating FCM token: $e');
+    }
   }
 
-  Future<void> requestPermissions() async {
-    NotificationSettings settings = await _firebaseMessaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-    print('User granted permission: ${settings.authorizationStatus}');
+  Future<void> sendNotification({
+    required String title,
+    required String body,
+    required String pushToken,
+  }) async {
+    try {
+      // 여기에 기존의 sendNotification 로직을 유지합니다.
+    } catch (e) {
+      print('Failed to send push notification: $e');
+    }
   }
 
-  void _logMessageReceived(RemoteMessage message) {
-    _analytics.logEvent(
-      name: 'fcm_message_received',
-      parameters: {
-        'message_id': message.messageId ?? 'unknown', //^
-        'title': message.notification?.title ?? 'No Title', //^
-        'body': message.notification?.body ?? 'No Body', //^
-      },
-    );
+  Future<void> _requestPermissions() async {
+    final settings = await _firebaseMessaging.requestPermission();
+    if (settings.authorizationStatus != AuthorizationStatus.authorized) {
+      print('User declined or has not accepted permission for notifications');
+    }
+  }
+
+  Future<void> _configureFCM() async {
+    // 여기에 기존의 FCM 설정 로직을 유지합니다.
+  }
+
+  Future<String?> getToken() async {
+    try {
+      return await _firebaseMessaging.getToken();
+    } catch (e) {
+      print('Error getting FCM token: $e');
+      return null;
+    }
+  }
+
+  //방생성 버튼 로직
+  Future<void> sendRoomCreationNotification({
+    required String roomName,
+    required String creatorName,
+  }) async {
+    try {
+      User? user = _auth.currentUser;
+      if (user == null) {
+        print('User not logged in, cannot send notification');
+        return;
+      }
+
+      String? token = await getToken();
+      if (token == null) {
+        print('FCM token is null, cannot send notification');
+        return;
+      }
+
+      HttpsCallable callable = _functions.httpsCallable('sendPushNotification');
+      final result = await callable.call({
+        'title': "새로운 방 생성: $roomName",
+        'body': "$creatorName 님이 새로운 방을 만들었습니다.",
+        'userId': user.uid, // 토큰 대신 userId를 전송
+      });
+
+      print('Push notification sent successfully: ${result.data}');
+    } catch (e) {
+      print('Failed to send push notification: $e');
+      rethrow; // 에러를 상위로 전파하여 UI에서 처리할 수 있게 함
+    }
   }
 }

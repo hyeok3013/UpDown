@@ -14,7 +14,7 @@ class ConfirmPasswordFormField extends StatelessWidget {
     return TextFormField(
       obscureText: true,
       decoration: const InputDecoration(
-        labelText: 'Confirm password',
+        labelText: '비밀번호 확인',
       ),
       validator: (String? value) {
         if (_passwordController.text != value) {
@@ -40,7 +40,7 @@ class PasswordFormField extends StatelessWidget {
       controller: _passwordController,
       obscureText: true,
       decoration: const InputDecoration(
-        labelText: 'Password',
+        labelText: '비밀번호',
       ),
       validator: (String? value) {
         if (value == null || value.trim().isEmpty) {
@@ -59,18 +59,21 @@ class EmailFormField extends StatelessWidget {
   const EmailFormField({
     super.key,
     required TextEditingController emailController,
+    this.enabled,
   }) : _emailController = emailController;
 
   final TextEditingController _emailController;
+  final bool? enabled;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: enabled ?? true,
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       autocorrect: false,
       decoration: const InputDecoration(
-        labelText: 'Email',
+        labelText: '이메일',
         hintText: '@email.com',
         hintStyle: TextStyle(
           color: Colors.grey,
@@ -102,7 +105,7 @@ class NameFormField extends StatelessWidget {
     return TextFormField(
       controller: _nameController,
       decoration: const InputDecoration(
-        labelText: 'Name',
+        labelText: '닉네임',
       ),
       validator: (String? value) {
         if (value == null || value.trim().isEmpty) {

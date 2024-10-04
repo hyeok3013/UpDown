@@ -13,6 +13,7 @@ class ChatRoom extends ConsumerWidget {
   final String roomStartDate;
   final String roomEndDate;
   final String imageUrl; // 추가된 부분: 이미지 URL
+  final List<String> participants; // 추가된 부분: 이미지 URL
 
   const ChatRoom({
     super.key,
@@ -22,6 +23,7 @@ class ChatRoom extends ConsumerWidget {
     required this.roomEndDate,
     required this.imageUrl,
     required this.roomId, // 이미지 URL 매개변수 추가
+    required this.participants,
   });
 
   @override
@@ -33,20 +35,27 @@ class ChatRoom extends ConsumerWidget {
             .addParticipant(roomId, fbAuth.currentUser!.uid);
         context.goNamed(
           RouteNames.vote,
-          pathParameters: {'roomId': roomId}, // roomId를 params로 전달
+          pathParameters: {'roomId': roomId}, // roomId를 경로로 전달
+          extra: {
+            'roomId': roomId,
+            'roomName': roomName,
+            'personName': personName,
+            'participants': participants
+          }, // 필요한 데이터를 Map으로 전달
         );
       },
       child: Container(
         padding: const EdgeInsets.all(14.0),
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          // color: Colors.white,
           borderRadius: BorderRadius.circular(12.0),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
+              blurStyle: BlurStyle.outer,
               spreadRadius: 2,
-              blurRadius: 5,
+              blurRadius: 8,
               offset: const Offset(0, 3),
             ),
           ],
@@ -62,14 +71,12 @@ class ChatRoom extends ConsumerWidget {
                 height: 70,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 70,
-                    height: 70,
-                    color: Colors.grey[300],
-                    child: const Icon(
-                      Icons.error,
-                      size: 30,
-                      color: Colors.red,
+                  return ClipOval(
+                    child: Image.asset(
+                      'assets/images/default_profile_black.png',
+                      width: 70,
+                      height: 70,
+                      fit: BoxFit.cover,
                     ),
                   );
                 },
@@ -79,7 +86,7 @@ class ChatRoom extends ConsumerWidget {
             Container(
               width: 1,
               height: 75,
-              color: Colors.deepPurple,
+              color: Colors.redAccent,
             ),
             const SizedBox(width: 14.0),
             Expanded(
@@ -90,7 +97,7 @@ class ChatRoom extends ConsumerWidget {
                     personName,
                     style: const TextStyle(
                       fontSize: 18.0,
-                      color: Colors.black,
+                      // color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -98,7 +105,7 @@ class ChatRoom extends ConsumerWidget {
                     roomName,
                     style: const TextStyle(
                       fontSize: 15.0,
-                      color: Colors.black,
+                      // color: Colors.black,
                     ),
                   ),
                   const SizedBox(height: 5.0),

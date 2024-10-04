@@ -19,6 +19,7 @@ mixin _$AppUser {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
+  String get fcmToken => throw _privateConstructorUsedError;
 
   /// Create a copy of AppUser
   /// with the given fields replaced by the non-null parameter values.
@@ -31,7 +32,7 @@ abstract class $AppUserCopyWith<$Res> {
   factory $AppUserCopyWith(AppUser value, $Res Function(AppUser) then) =
       _$AppUserCopyWithImpl<$Res, AppUser>;
   @useResult
-  $Res call({String id, String name, String email});
+  $Res call({String id, String name, String email, String fcmToken});
 }
 
 /// @nodoc
@@ -52,6 +53,7 @@ class _$AppUserCopyWithImpl<$Res, $Val extends AppUser>
     Object? id = null,
     Object? name = null,
     Object? email = null,
+    Object? fcmToken = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -66,6 +68,10 @@ class _$AppUserCopyWithImpl<$Res, $Val extends AppUser>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      fcmToken: null == fcmToken
+          ? _value.fcmToken
+          : fcmToken // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -77,7 +83,7 @@ abstract class _$$AppUserImplCopyWith<$Res> implements $AppUserCopyWith<$Res> {
       __$$AppUserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, String email});
+  $Res call({String id, String name, String email, String fcmToken});
 }
 
 /// @nodoc
@@ -96,6 +102,7 @@ class __$$AppUserImplCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
     Object? email = null,
+    Object? fcmToken = null,
   }) {
     return _then(_$AppUserImpl(
       id: null == id
@@ -110,6 +117,10 @@ class __$$AppUserImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      fcmToken: null == fcmToken
+          ? _value.fcmToken
+          : fcmToken // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -117,7 +128,8 @@ class __$$AppUserImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AppUserImpl with DiagnosticableTreeMixin implements _AppUser {
-  const _$AppUserImpl({this.id = '', this.name = '', this.email = ''});
+  const _$AppUserImpl(
+      {this.id = '', this.name = '', this.email = '', this.fcmToken = ''});
 
   @override
   @JsonKey()
@@ -128,10 +140,13 @@ class _$AppUserImpl with DiagnosticableTreeMixin implements _AppUser {
   @override
   @JsonKey()
   final String email;
+  @override
+  @JsonKey()
+  final String fcmToken;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AppUser(id: $id, name: $name, email: $email)';
+    return 'AppUser(id: $id, name: $name, email: $email, fcmToken: $fcmToken)';
   }
 
   @override
@@ -141,7 +156,8 @@ class _$AppUserImpl with DiagnosticableTreeMixin implements _AppUser {
       ..add(DiagnosticsProperty('type', 'AppUser'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('email', email));
+      ..add(DiagnosticsProperty('email', email))
+      ..add(DiagnosticsProperty('fcmToken', fcmToken));
   }
 
   @override
@@ -151,11 +167,13 @@ class _$AppUserImpl with DiagnosticableTreeMixin implements _AppUser {
             other is _$AppUserImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.email, email) || other.email == email));
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.fcmToken, fcmToken) ||
+                other.fcmToken == fcmToken));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, email);
+  int get hashCode => Object.hash(runtimeType, id, name, email, fcmToken);
 
   /// Create a copy of AppUser
   /// with the given fields replaced by the non-null parameter values.
@@ -168,7 +186,10 @@ class _$AppUserImpl with DiagnosticableTreeMixin implements _AppUser {
 
 abstract class _AppUser implements AppUser {
   const factory _AppUser(
-      {final String id, final String name, final String email}) = _$AppUserImpl;
+      {final String id,
+      final String name,
+      final String email,
+      final String fcmToken}) = _$AppUserImpl;
 
   @override
   String get id;
@@ -176,6 +197,8 @@ abstract class _AppUser implements AppUser {
   String get name;
   @override
   String get email;
+  @override
+  String get fcmToken;
 
   /// Create a copy of AppUser
   /// with the given fields replaced by the non-null parameter values.

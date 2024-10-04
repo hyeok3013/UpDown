@@ -24,7 +24,7 @@ mixin _$Vote {
   int get guiltyCount => throw _privateConstructorUsedError; // 잘못했다는 투표 수
   int get notGuiltyCount =>
       throw _privateConstructorUsedError; // 잘못하지 않았다는 투표 수
-  List<String> get participants => throw _privateConstructorUsedError;
+  Map<String, bool> get participants => throw _privateConstructorUsedError;
 
   /// Create a copy of Vote
   /// with the given fields replaced by the non-null parameter values.
@@ -43,7 +43,7 @@ abstract class $VoteCopyWith<$Res> {
       String personName,
       int guiltyCount,
       int notGuiltyCount,
-      List<String> participants});
+      Map<String, bool> participants});
 }
 
 /// @nodoc
@@ -92,7 +92,7 @@ class _$VoteCopyWithImpl<$Res, $Val extends Vote>
       participants: null == participants
           ? _value.participants
           : participants // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as Map<String, bool>,
     ) as $Val);
   }
 }
@@ -110,7 +110,7 @@ abstract class _$$VoteImplCopyWith<$Res> implements $VoteCopyWith<$Res> {
       String personName,
       int guiltyCount,
       int notGuiltyCount,
-      List<String> participants});
+      Map<String, bool> participants});
 }
 
 /// @nodoc
@@ -156,7 +156,7 @@ class __$$VoteImplCopyWithImpl<$Res>
       participants: null == participants
           ? _value._participants
           : participants // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as Map<String, bool>,
     ));
   }
 }
@@ -170,7 +170,7 @@ class _$VoteImpl implements _Vote {
       required this.personName,
       required this.guiltyCount,
       required this.notGuiltyCount,
-      required final List<String> participants})
+      required final Map<String, bool> participants})
       : _participants = participants;
 
   @override
@@ -188,13 +188,13 @@ class _$VoteImpl implements _Vote {
   @override
   final int notGuiltyCount;
 // 잘못하지 않았다는 투표 수
-  final List<String> _participants;
+  final Map<String, bool> _participants;
 // 잘못하지 않았다는 투표 수
   @override
-  List<String> get participants {
-    if (_participants is EqualUnmodifiableListView) return _participants;
+  Map<String, bool> get participants {
+    if (_participants is EqualUnmodifiableMapView) return _participants;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_participants);
+    return EqualUnmodifiableMapView(_participants);
   }
 
   @override
@@ -245,7 +245,7 @@ abstract class _Vote implements Vote {
       required final String personName,
       required final int guiltyCount,
       required final int notGuiltyCount,
-      required final List<String> participants}) = _$VoteImpl;
+      required final Map<String, bool> participants}) = _$VoteImpl;
 
   @override
   String get voteId; // 투표의 고유 ID
@@ -258,7 +258,7 @@ abstract class _Vote implements Vote {
   @override
   int get notGuiltyCount; // 잘못하지 않았다는 투표 수
   @override
-  List<String> get participants;
+  Map<String, bool> get participants;
 
   /// Create a copy of Vote
   /// with the given fields replaced by the non-null parameter values.

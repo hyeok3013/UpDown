@@ -496,6 +496,8 @@ abstract class _Success implements ResultViewState {
 mixin _$VoteResultItem {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  String get personName => throw _privateConstructorUsedError;
+  List<String> get participants => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
   double get forPercentage => throw _privateConstructorUsedError;
   double get againstPercentage => throw _privateConstructorUsedError;
@@ -522,6 +524,8 @@ abstract class $VoteResultItemCopyWith<$Res> {
   $Res call(
       {String id,
       String title,
+      String personName,
+      List<String> participants,
       String imageUrl,
       double forPercentage,
       double againstPercentage,
@@ -550,6 +554,8 @@ class _$VoteResultItemCopyWithImpl<$Res, $Val extends VoteResultItem>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? personName = null,
+    Object? participants = null,
     Object? imageUrl = null,
     Object? forPercentage = null,
     Object? againstPercentage = null,
@@ -569,6 +575,14 @@ class _$VoteResultItemCopyWithImpl<$Res, $Val extends VoteResultItem>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      personName: null == personName
+          ? _value.personName
+          : personName // ignore: cast_nullable_to_non_nullable
+              as String,
+      participants: null == participants
+          ? _value.participants
+          : participants // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       imageUrl: null == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -620,6 +634,8 @@ abstract class _$$VoteResultItemImplCopyWith<$Res>
   $Res call(
       {String id,
       String title,
+      String personName,
+      List<String> participants,
       String imageUrl,
       double forPercentage,
       double againstPercentage,
@@ -646,6 +662,8 @@ class __$$VoteResultItemImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? personName = null,
+    Object? participants = null,
     Object? imageUrl = null,
     Object? forPercentage = null,
     Object? againstPercentage = null,
@@ -665,6 +683,14 @@ class __$$VoteResultItemImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      personName: null == personName
+          ? _value.personName
+          : personName // ignore: cast_nullable_to_non_nullable
+              as String,
+      participants: null == participants
+          ? _value._participants
+          : participants // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       imageUrl: null == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -711,6 +737,8 @@ class _$VoteResultItemImpl implements _VoteResultItem {
   const _$VoteResultItemImpl(
       {required this.id,
       required this.title,
+      required this.personName,
+      required final List<String> participants,
       required this.imageUrl,
       required this.forPercentage,
       required this.againstPercentage,
@@ -719,12 +747,23 @@ class _$VoteResultItemImpl implements _VoteResultItem {
       required this.roomStartDate,
       required this.roomEndDate,
       required this.guiltyCount,
-      required this.notGuiltyCount});
+      required this.notGuiltyCount})
+      : _participants = participants;
 
   @override
   final String id;
   @override
   final String title;
+  @override
+  final String personName;
+  final List<String> _participants;
+  @override
+  List<String> get participants {
+    if (_participants is EqualUnmodifiableListView) return _participants;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_participants);
+  }
+
   @override
   final String imageUrl;
   @override
@@ -746,7 +785,7 @@ class _$VoteResultItemImpl implements _VoteResultItem {
 
   @override
   String toString() {
-    return 'VoteResultItem(id: $id, title: $title, imageUrl: $imageUrl, forPercentage: $forPercentage, againstPercentage: $againstPercentage, isWinner: $isWinner, participantCount: $participantCount, roomStartDate: $roomStartDate, roomEndDate: $roomEndDate, guiltyCount: $guiltyCount, notGuiltyCount: $notGuiltyCount)';
+    return 'VoteResultItem(id: $id, title: $title, personName: $personName, participants: $participants, imageUrl: $imageUrl, forPercentage: $forPercentage, againstPercentage: $againstPercentage, isWinner: $isWinner, participantCount: $participantCount, roomStartDate: $roomStartDate, roomEndDate: $roomEndDate, guiltyCount: $guiltyCount, notGuiltyCount: $notGuiltyCount)';
   }
 
   @override
@@ -756,6 +795,10 @@ class _$VoteResultItemImpl implements _VoteResultItem {
             other is _$VoteResultItemImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.personName, personName) ||
+                other.personName == personName) &&
+            const DeepCollectionEquality()
+                .equals(other._participants, _participants) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.forPercentage, forPercentage) ||
@@ -781,6 +824,8 @@ class _$VoteResultItemImpl implements _VoteResultItem {
       runtimeType,
       id,
       title,
+      personName,
+      const DeepCollectionEquality().hash(_participants),
       imageUrl,
       forPercentage,
       againstPercentage,
@@ -805,6 +850,8 @@ abstract class _VoteResultItem implements VoteResultItem {
   const factory _VoteResultItem(
       {required final String id,
       required final String title,
+      required final String personName,
+      required final List<String> participants,
       required final String imageUrl,
       required final double forPercentage,
       required final double againstPercentage,
@@ -819,6 +866,10 @@ abstract class _VoteResultItem implements VoteResultItem {
   String get id;
   @override
   String get title;
+  @override
+  String get personName;
+  @override
+  List<String> get participants;
   @override
   String get imageUrl;
   @override

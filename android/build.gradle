@@ -12,7 +12,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.2'
-        classpath 'com.google.gms:google-services:4.3.15' // 이 줄을 추가
+        classpath 'com.google.gms:google-services:4.3.15'
     }
 }
 

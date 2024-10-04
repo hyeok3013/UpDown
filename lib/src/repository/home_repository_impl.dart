@@ -24,7 +24,6 @@ class HomeRepositoryImpl implements HomeRepository {
             snapshot.docs.map((doc) => Room.fromFirestore(doc)).toList())
         .handleError((error) {
       print('Error fetching popular rooms: $error');
-      // 예를 들어, 사용자에게 에러 메시지를 표시하거나 기본 데이터를 제공할 수 있습니다.
     });
   }
 
@@ -34,7 +33,7 @@ class HomeRepositoryImpl implements HomeRepository {
     return _firestore
         .collection('rooms')
         .where('roomEndDate', isGreaterThanOrEqualTo: Timestamp.fromDate(now))
-        .orderBy('roomEndDate', descending: false) // 필터링에 사용된 필드로 정렬
+        .orderBy('roomEndDate', descending: false)
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => Room.fromFirestore(doc)).toList());
@@ -55,19 +54,7 @@ class HomeRepositoryImpl implements HomeRepository {
       'imageUrl': imageUrl,
       'participantCount': 0,
       'createdAt': Timestamp.now(),
-    });
-
-    // participants 서브 컬렉션에 참여자 추가 (예시)
-    await roomRef.collection('participants').add({
-      'userId': 'exampleUserId', // 실제 사용자 ID를 넣어야 함
-      'joinedAt': Timestamp.now(),
-    });
-
-    // messages 서브 컬렉션에 메시지 추가 (예시)
-    await roomRef.collection('messages').add({
-      'userId': 'exampleUserId', // 실제 사용자 ID를 넣어야 함
-      'message': 'Hello, world!',
-      'sentAt': Timestamp.now(),
+      'participants': [],
     });
   }
 
@@ -75,12 +62,8 @@ class HomeRepositoryImpl implements HomeRepository {
   Future<void> addParticipant(String roomId, String userId) async {
     DocumentReference roomRef = _firestore.collection('rooms').doc(roomId);
 
-    await roomRef.collection('participants').doc(userId).set({
-      'userId': userId,
-      'joinedAt': Timestamp.now(),
-    });
-
     await roomRef.update({
+      'participants': FieldValue.arrayUnion([userId]),
       'participantCount': FieldValue.increment(1),
     });
   }
@@ -89,9 +72,8 @@ class HomeRepositoryImpl implements HomeRepository {
   Future<void> removeParticipant(String roomId, String userId) async {
     DocumentReference roomRef = _firestore.collection('rooms').doc(roomId);
 
-    await roomRef.collection('participants').doc(userId).delete();
-
     await roomRef.update({
+      'participants': FieldValue.arrayRemove([userId]),
       'participantCount': FieldValue.increment(-1),
     });
   }

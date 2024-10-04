@@ -1,29 +1,11 @@
 {
   "project_info": {
     "project_number": "364848733451",
+    "firebase_url": "https://up-down-app-default-rtdb.firebaseio.com",
     "project_id": "up-down-app",
     "storage_bucket": "up-down-app.appspot.com"
   },
   "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:364848733451:android:0838305979c13afe9fd60e",
-        "android_client_info": {
-          "package_name": "com.example.up_down_app"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCHBCKbJ0Yrfd4U0JzY3g1hio3OdwrY34Y"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:364848733451:android:a506ded027a261a59fd60e",
@@ -32,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "364848733451-gul8jau3i9qv9coeqqndhph681fnh9dk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.up_down_app",
+            "certificate_hash": "849fad26923b6d6b8fb7af24c433cf23d743b6aa"
+          }
+        },
         {
           "client_id": "364848733451-o0cpr5r5nlivij6l34rc1nlckes3o01r.apps.googleusercontent.com",
           "client_type": 1,

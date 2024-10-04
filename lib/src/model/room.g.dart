@@ -13,6 +13,10 @@ _$RoomImpl _$$RoomImplFromJson(Map<String, dynamic> json) => _$RoomImpl(
       imageUrl: json['imageUrl'] as String,
       roomStartDate: DateTime.parse(json['roomStartDate'] as String),
       roomEndDate: DateTime.parse(json['roomEndDate'] as String),
+      participants: (json['participants'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
       participantCount: (json['participantCount'] as num?)?.toInt() ?? 0,
     );
 
@@ -24,5 +28,6 @@ Map<String, dynamic> _$$RoomImplToJson(_$RoomImpl instance) =>
       'imageUrl': instance.imageUrl,
       'roomStartDate': instance.roomStartDate.toIso8601String(),
       'roomEndDate': instance.roomEndDate.toIso8601String(),
+      'participants': instance.participants,
       'participantCount': instance.participantCount,
     };

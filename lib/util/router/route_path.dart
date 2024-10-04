@@ -5,18 +5,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:up_down/component/page_not_found.dart';
 import 'package:up_down/component/scaffold_with_nav_bar.dart';
 import 'package:up_down/src/provider/auth_repository_provider.dart';
-import 'package:up_down/src/view/auth/main/auth_view.dart';
-import 'package:up_down/src/view/setting/main/setting_view.dart';
+import 'package:up_down/src/view/auth/auth_view.dart';
+import 'package:up_down/src/view/setting/setting_view.dart';
 import 'package:up_down/src/view/chat/chat_view.dart';
 import 'package:up_down/src/view/chat/vote/vote_view.dart';
-import 'package:up_down/src/view/home/create_room_view.dart';
+import 'package:up_down/src/view/home/create_room/create_room_view.dart';
 import 'package:up_down/src/view/home/home_view.dart';
 import 'package:up_down/src/view/result/result_view.dart';
 import 'package:up_down/src/view/splash/firebase_error_view.dart';
 import 'package:up_down/src/view/splash/splash_view.dart';
 import 'package:up_down/util/router/route_names.dart';
-
-import '../helper/firebase_helper.dart';
 
 part 'route_path.g.dart';
 
@@ -33,7 +31,7 @@ GoRouter route(RouteRef ref) {
       ///웹에서 다른 주소로 접속을 할 때 redirect을 사용해서 잘못된 접근을 막을 수 있음.
       ///앱에서는 상대적으로 덜 중요해서 로그인의 여부만 잘 관리해도 될 것 같음.
 
-      redirect: (context, state) {
+      redirect: (context, state) async {
         if (authState is AsyncLoading<User?>) {
           return '/splash';
         }
@@ -51,14 +49,9 @@ GoRouter route(RouteRef ref) {
           return authenticating ? null : '/auth';
         }
 
-        // if (!fbAuth.currentUser!.emailVerified) {
-        //   return '/verifyEmail';
-        // }
-
-        final verifyingEmail = state.matchedLocation == '/verifyEmail';
         final splashing = state.matchedLocation == '/splash';
 
-        return (authenticating || verifyingEmail || splashing) ? '/home' : null;
+        return (authenticating || splashing) ? '/home' : null;
       },
       routes: [
         GoRoute(
@@ -83,27 +76,6 @@ GoRouter route(RouteRef ref) {
             return const AuthView();
           },
         ),
-        // GoRoute(
-        //   path: '/signup',
-        //   name: RouteNames.signup,
-        //   builder: (context, state) {
-        //     return const SignupView();
-        //   },
-        // ),
-        // GoRoute(
-        //   path: '/resetPassword',
-        //   name: RouteNames.resetPassword,
-        //   builder: (context, state) {
-        //     return const ResetPasswordView();
-        //   },
-        // ),
-        // GoRoute(
-        //   path: '/verifyEmail',
-        //   name: RouteNames.verifyEmail,
-        //   builder: (context, state) {
-        //     return const VerifyEmailView();
-        //   },
-        // ),
 
         ///Bottom Navigation
         StatefulShellRoute.indexedStack(
@@ -113,22 +85,6 @@ GoRouter route(RouteRef ref) {
           branches: [
             StatefulShellBranch(
               routes: [
-                // GoRoute(
-                //   path: '/home',
-                //   name: RouteNames.home,
-                //   builder: (context, state) {
-                //     return const HomeView();
-                //   },
-                //   routes: [
-                //     GoRoute(
-                //       path: 'changePassword',
-                //       name: RouteNames.changePassword,
-                //       builder: (context, state) {
-                //         return const ChangePasswordView();
-                //       },
-                //     ),
-                //   ],
-                // ),
                 GoRoute(
                   path: '/home',
                   name: RouteNames.home,
@@ -158,8 +114,24 @@ GoRouter route(RouteRef ref) {
                       path: 'vote/:roomId',
                       name: RouteNames.vote,
                       builder: (context, state) {
-                        final roomId = state.pathParameters['roomId'];
-                        return VoteView(roomId: roomId!);
+                        // extra에서 roomId, roomName, personName, participants 값을 가져옴
+                        final extraData = state.extra as Map<String, dynamic>;
+
+                        // 각각의 값들을 명시적으로 String 또는 List<String>으로 변환
+                        final roomId = extraData['roomId'] as String;
+                        final roomName = extraData['roomName'] as String;
+                        final personName = extraData['personName'] as String;
+
+                        // participants는 List<String> 타입으로 캐스팅
+                        final participants = List<String>.from(
+                            extraData['participants'] as List);
+
+                        return VoteView(
+                          roomId: roomId,
+                          roomName: roomName,
+                          personName: personName,
+                          participants: participants,
+                        );
                       },
                     ),
                   ],

@@ -26,6 +26,8 @@ mixin _$Room {
   String get imageUrl => throw _privateConstructorUsedError;
   DateTime get roomStartDate => throw _privateConstructorUsedError;
   DateTime get roomEndDate => throw _privateConstructorUsedError;
+  List<String> get participants =>
+      throw _privateConstructorUsedError; // 참가자 리스트
   int get participantCount => throw _privateConstructorUsedError;
 
   /// Serializes this Room to a JSON map.
@@ -49,6 +51,7 @@ abstract class $RoomCopyWith<$Res> {
       String imageUrl,
       DateTime roomStartDate,
       DateTime roomEndDate,
+      List<String> participants,
       int participantCount});
 }
 
@@ -73,6 +76,7 @@ class _$RoomCopyWithImpl<$Res, $Val extends Room>
     Object? imageUrl = null,
     Object? roomStartDate = null,
     Object? roomEndDate = null,
+    Object? participants = null,
     Object? participantCount = null,
   }) {
     return _then(_value.copyWith(
@@ -100,6 +104,10 @@ class _$RoomCopyWithImpl<$Res, $Val extends Room>
           ? _value.roomEndDate
           : roomEndDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      participants: null == participants
+          ? _value.participants
+          : participants // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       participantCount: null == participantCount
           ? _value.participantCount
           : participantCount // ignore: cast_nullable_to_non_nullable
@@ -122,6 +130,7 @@ abstract class _$$RoomImplCopyWith<$Res> implements $RoomCopyWith<$Res> {
       String imageUrl,
       DateTime roomStartDate,
       DateTime roomEndDate,
+      List<String> participants,
       int participantCount});
 }
 
@@ -143,6 +152,7 @@ class __$$RoomImplCopyWithImpl<$Res>
     Object? imageUrl = null,
     Object? roomStartDate = null,
     Object? roomEndDate = null,
+    Object? participants = null,
     Object? participantCount = null,
   }) {
     return _then(_$RoomImpl(
@@ -170,6 +180,10 @@ class __$$RoomImplCopyWithImpl<$Res>
           ? _value.roomEndDate
           : roomEndDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      participants: null == participants
+          ? _value._participants
+          : participants // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       participantCount: null == participantCount
           ? _value.participantCount
           : participantCount // ignore: cast_nullable_to_non_nullable
@@ -188,7 +202,9 @@ class _$RoomImpl implements _Room {
       required this.imageUrl,
       required this.roomStartDate,
       required this.roomEndDate,
-      this.participantCount = 0});
+      final List<String> participants = const [],
+      this.participantCount = 0})
+      : _participants = participants;
 
   factory _$RoomImpl.fromJson(Map<String, dynamic> json) =>
       _$$RoomImplFromJson(json);
@@ -205,13 +221,23 @@ class _$RoomImpl implements _Room {
   final DateTime roomStartDate;
   @override
   final DateTime roomEndDate;
+  final List<String> _participants;
+  @override
+  @JsonKey()
+  List<String> get participants {
+    if (_participants is EqualUnmodifiableListView) return _participants;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_participants);
+  }
+
+// 참가자 리스트
   @override
   @JsonKey()
   final int participantCount;
 
   @override
   String toString() {
-    return 'Room(roomId: $roomId, roomName: $roomName, personName: $personName, imageUrl: $imageUrl, roomStartDate: $roomStartDate, roomEndDate: $roomEndDate, participantCount: $participantCount)';
+    return 'Room(roomId: $roomId, roomName: $roomName, personName: $personName, imageUrl: $imageUrl, roomStartDate: $roomStartDate, roomEndDate: $roomEndDate, participants: $participants, participantCount: $participantCount)';
   }
 
   @override
@@ -230,14 +256,24 @@ class _$RoomImpl implements _Room {
                 other.roomStartDate == roomStartDate) &&
             (identical(other.roomEndDate, roomEndDate) ||
                 other.roomEndDate == roomEndDate) &&
+            const DeepCollectionEquality()
+                .equals(other._participants, _participants) &&
             (identical(other.participantCount, participantCount) ||
                 other.participantCount == participantCount));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, roomId, roomName, personName,
-      imageUrl, roomStartDate, roomEndDate, participantCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      roomId,
+      roomName,
+      personName,
+      imageUrl,
+      roomStartDate,
+      roomEndDate,
+      const DeepCollectionEquality().hash(_participants),
+      participantCount);
 
   /// Create a copy of Room
   /// with the given fields replaced by the non-null parameter values.
@@ -263,6 +299,7 @@ abstract class _Room implements Room {
       required final String imageUrl,
       required final DateTime roomStartDate,
       required final DateTime roomEndDate,
+      final List<String> participants,
       final int participantCount}) = _$RoomImpl;
 
   factory _Room.fromJson(Map<String, dynamic> json) = _$RoomImpl.fromJson;
@@ -279,6 +316,8 @@ abstract class _Room implements Room {
   DateTime get roomStartDate;
   @override
   DateTime get roomEndDate;
+  @override
+  List<String> get participants; // 참가자 리스트
   @override
   int get participantCount;
 

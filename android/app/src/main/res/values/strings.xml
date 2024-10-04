@@ -1,0 +1,9 @@
+<resources>
+    <!-- Facebook 설정 -->
+    <string name="facebook_app_id">551048534097729</string> <!-- 제공해주신 Facebook App ID -->
+    <string name="fb_login_protocol_scheme">fb551048534097729</string> <!-- Facebook App ID 기반의 프로토콜 스킴 -->
+    <string name="facebook_client_token">afedcec1e126f8745383e853d9ee7073</string> <!-- 제공해주신 Facebook Client Token -->
+
+    <!-- 앱 이름 -->
+    <string name="app_name">Up Down App</string>
+</resources>

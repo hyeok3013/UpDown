@@ -13,6 +13,5 @@ class RouteNames {
   // static const signin = 'signin';
   // static const signup = 'signup';
   // static const resetPassword = 'resetPassword';
-  static const verifyEmail = 'verifyEmail';
   static const changePassword = 'changePassword';
 }

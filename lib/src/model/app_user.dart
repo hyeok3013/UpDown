@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 part 'app_user.freezed.dart';
 
@@ -10,6 +10,7 @@ class AppUser with _$AppUser {
     @Default('') String id,
     @Default('') String name,
     @Default('') String email,
+    @Default('') String fcmToken,
   }) = _AppUser;
 
   factory AppUser.fromDoc(DocumentSnapshot appUserDoc) {
@@ -17,8 +18,9 @@ class AppUser with _$AppUser {
 
     return AppUser(
       id: appUserDoc.id,
-      name: appUserData['name'],
-      email: appUserData['email'],
+      name: appUserData['name'] ?? '',
+      email: appUserData['email'] ?? '',
+      fcmToken: appUserData['fcmToken'] ?? '',
     );
   }
 }

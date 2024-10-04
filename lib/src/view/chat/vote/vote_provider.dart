@@ -108,15 +108,17 @@
 // }
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:up_down/src/model/vote.dart';
-import 'package:up_down/src/model/message.dart';
 import 'package:up_down/src/provider/home_repository_provider.dart';
+import 'package:up_down/src/provider/image_repository_provider.dart';
 import 'package:up_down/src/provider/message_repository_provider.dart';
+import 'package:up_down/src/provider/profile_repository_provider.dart';
 import 'package:up_down/src/provider/vote_repository_provider.dart';
 import 'package:up_down/src/view/chat/vote/vote_view_state.dart';
 import 'package:up_down/util/helper/firebase_helper.dart';
+import 'package:up_down/util/helper/handle_exception.dart';
 
 part 'vote_provider.g.dart';
 
@@ -145,19 +147,72 @@ class Judgment extends _$Judgment {
     }
   }
 
+  /// 이미지 전송 함수
+  Future<void> sendImage({
+    required String roomId,
+    required bool isMyTurn,
+  }) async {
+    try {
+      // ImagePicker로 사용자에게 이미지 선택
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+      if (image != null) {
+        // Firebase Storage에 이미지 업로드
+        final downloadUrl =
+            await ref.read(imageRepositoryProvider).uploadImage(image);
+
+        if (downloadUrl != null) {
+          // 업로드된 이미지의 다운로드 URL을 메시지로 전송
+          final profile = await ref
+              .read(profileRepositoryProvider)
+              .getProfile(uid: fbAuth.currentUser!.uid);
+          final userName = profile.name;
+
+          await ref.read(messageRepositoryProvider).sendMessage(
+                roomId: roomId,
+                userId: fbAuth.currentUser!.uid,
+                name: userName,
+                message: downloadUrl, // 이미지 URL을 메시지로 전송
+                sentAt: Timestamp.now(),
+                isMyTurn: isMyTurn,
+              );
+        }
+      }
+    } catch (e) {
+      throw handleException(e); // 에러 처리
+    }
+  }
+
+  /// 메시지 전송 함수
   Future<void> sendMessage({
     required String roomId,
     String? userId,
+    String? name,
     required String message,
     Timestamp? sentAt,
+    required bool isMyTurn,
   }) async {
-    // 메시지 전송 후 업데이트된 메시지 가져오기
-    ref.read(messageRepositoryProvider).sendMessage(
-          roomId: roomId,
-          userId: fbAuth.currentUser!.uid,
-          message: message,
-          sentAt: sentAt ?? Timestamp.now(),
-        );
+    try {
+      // ProfileRepository에서 사용자 이름 가져오기
+      final profile = await ref
+          .read(profileRepositoryProvider)
+          .getProfile(uid: fbAuth.currentUser!.uid);
+
+      final userName = profile.name; // 가져온 사용자 이름
+
+      // 메시지 전송
+      ref.read(messageRepositoryProvider).sendMessage(
+            roomId: roomId,
+            userId: fbAuth.currentUser!.uid,
+            name: userName, // 가져온 사용자 이름을 메시지에 포함
+            message: message,
+            sentAt: sentAt ?? Timestamp.now(),
+            isMyTurn: isMyTurn,
+          );
+    } catch (e) {
+      throw handleException(e);
+    }
   }
 
   Future<void> castVote({

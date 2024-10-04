@@ -7,18 +7,20 @@ import 'package:up_down/util/helper/firebase_helper.dart';
 import 'package:up_down/util/router/route_names.dart';
 
 class PopularRoomCard extends ConsumerWidget {
+  final String personName;
   final String roomId;
   final String roomName;
-  final String personName;
-  final String imageUrl;
-  final int participantCount; // 추가된 필드
+  final String imageUrl; // 이미지 URL
+  final List<String> participants;
+  final int participantCount;
 
   const PopularRoomCard({
     super.key,
-    required this.roomId,
-    required this.roomName,
     required this.personName,
+    required this.roomName,
     required this.imageUrl,
+    required this.roomId,
+    required this.participants,
     required this.participantCount,
   });
 
@@ -31,12 +33,17 @@ class PopularRoomCard extends ConsumerWidget {
             .addParticipant(roomId, fbAuth.currentUser!.uid);
         context.goNamed(
           RouteNames.vote,
-          pathParameters: {'roomId': roomId}, // roomId를 params로 전달
+          pathParameters: {'roomId': roomId},
+          extra: {
+            'roomId': roomId,
+            'roomName': roomName,
+            'personName': personName,
+            'participants': participants
+          },
         );
       },
       child: Card(
         margin: const EdgeInsets.all(8.0),
-        color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(5),
           child: Column(
@@ -49,8 +56,14 @@ class PopularRoomCard extends ConsumerWidget {
                   height: 90,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
-                    return const Icon(Icons.error,
-                        size: 100, color: Colors.red);
+                    return ClipOval(
+                      child: Image.asset(
+                        'assets/images/default_profile_black.png',
+                        width: 90,
+                        height: 90,
+                        fit: BoxFit.cover,
+                      ),
+                    );
                   },
                 ),
               ),
@@ -65,7 +78,7 @@ class PopularRoomCard extends ConsumerWidget {
                 style: const TextStyle(fontSize: 16),
               ),
               Text(
-                'Participants: $participantCount',
+                '참가자 수: $participantCount',
                 style: const TextStyle(fontSize: 14, color: Colors.grey),
               ),
             ],

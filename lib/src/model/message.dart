@@ -8,16 +8,20 @@ part 'message.freezed.dart';
 class Message with _$Message {
   const factory Message({
     required String userId,
+    required String name,
     required String message,
     required Timestamp sentAt,
+    required bool isMyTurn,
   }) = _Message;
 
   factory Message.fromDoc(DocumentSnapshot messageDoc) {
     final messageDate = messageDoc.data() as Map<String, dynamic>;
     return Message(
       userId: messageDate['userId'],
+      name: messageDate['name'],
       message: messageDate['message'],
       sentAt: messageDate['sentAt'],
+      isMyTurn: messageDate['isMyTurn'],
     );
   }
 }
