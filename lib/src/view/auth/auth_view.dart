@@ -54,19 +54,26 @@ class _AuthViewState extends ConsumerState<AuthView> {
   }
 
   // 페이스북 로그인
-  Future<void> _signInWithFacebook() async {
-    //^
-    try {
-      await ref.read(signInProvider.notifier).signInWithFacebook(); //^
-    } catch (e) {
-      print('Error signing in with Facebook: $e'); //^
-      if (!mounted) return; //^
-      ScaffoldMessenger.of(context).showSnackBar(
-        //^
-        SnackBar(content: Text('Failed to sign in with Facebook: $e')), //^
-      ); //^
-    }
-  }
+  // Future<void> _signInWithFacebook() async {
+  //   try {
+  //     await ref.read(signInProvider.notifier).signInWithFacebook();
+  //     if (!mounted) return;
+  //
+  //     // 로그인 성공 후 처리
+  //     context.go('/home'); // 홈 화면으로 이동
+  //   } catch (e) {
+  //     print('Error signing in with Facebook: $e');
+  //     if (!mounted) return;
+  //
+  //     // 더 자세한 오류 메시지 표시
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text('Facebook 로그인 실패: ${e.toString()}'),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //   }
+  // }
 
   @override
   void dispose() {

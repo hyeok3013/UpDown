@@ -174,34 +174,33 @@ class AuthRepository {
 
   //페이스북 로그인
   Future<void> signInWithFacebook() async {
-    //^
     try {
-      final LoginResult result = await FacebookAuth.instance.login(); //^
+      final LoginResult result = await FacebookAuth.instance.login();
 
       if (result.status == LoginStatus.success) {
-        //^
-        final AccessToken accessToken = result.accessToken!; //^
+        final AccessToken accessToken = result.accessToken!;
 
         final credential =
             FacebookAuthProvider.credential(accessToken.tokenString);
 
-        final newUser = await fbAuth.signInWithCredential(credential); //^
+        final userCredential = await fbAuth.signInWithCredential(credential);
+        final user = userCredential.user;
 
-        if (newUser.additionalUserInfo?.isNewUser ?? false) {
-          //^
-          await usersCollection.doc(newUser.user!.uid).set({
-            //^
-            'name': newUser.user!.displayName, //^
-            'email': newUser.user!.email, //^
-            'isAdmin': false, //^
-          }); //^
+        if (user != null) {
+          // 항상 사용자 정보를 업데이트하거나 저장
+          await usersCollection.doc(user.uid).set({
+            'name': user.displayName ?? 'Facebook User',
+            'email': user.email ?? 'No Email',
+            'isAdmin': false,
+            'lastLogin': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
         }
       } else {
-        throw Exception('Facebook sign in failed: ${result.status}'); //^
+        throw Exception('Facebook sign in failed: ${result.status}');
       }
     } catch (e) {
-      print('facebook error: $e'); //^
-      throw handleException(e); //^
+      print('Facebook error: $e');
+      throw handleException(e);
     }
   }
 

@@ -29,5 +29,11 @@ class SignIn extends _$SignIn {
     );
   }
 
-  signInWithFacebook() {}
+  Future<void> signInWithFacebook() async {
+    state = const AsyncLoading<void>();
+
+    state = await AsyncValue.guard<void>(
+      () => ref.read(authRepositoryProvider).signInWithFacebook(),
+    );
+  }
 }
