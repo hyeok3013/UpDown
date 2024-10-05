@@ -1,14 +1,14 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:up_down/services/fcm/fcm_service.dart';
 import 'package:up_down/theme/colors.dart';
 import 'package:up_down/util/router/route_path.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 
 import 'firebase_options.dart';
 import 'src/view/setting/theme_toggle/theme_provider.dart';
@@ -22,6 +22,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Facebook SDK 초기화
+  await FacebookAuth.instance.autoLogAppEventsEnabled(true);
 
   // Firebase 초기화
   await Firebase.initializeApp(
